@@ -1,4 +1,4 @@
-Authors: Junior Avalos
+Authors: Junior Avalos, Megan Tegeder
 
 # Prime Solo Project - Starting Repo
 
