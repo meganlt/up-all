@@ -1,4 +1,4 @@
-Authors: Junior Avalos
+Authors: Junior Avalos, Jake Berg
 
 # Prime Solo Project - Starting Repo
 
