@@ -1,3 +1,5 @@
+Authors: Junior Avalos
+
 # Prime Solo Project - Starting Repo
 
 This version uses React, Zustand, Express, Passport, and PostgreSQL. (A full list of dependencies can be found in `package.json`.)
