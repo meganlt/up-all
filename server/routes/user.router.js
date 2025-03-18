@@ -22,15 +22,16 @@ router.get('/', (req, res) => {
 // that we hash the password before inserting it into the database.
 router.post('/register', (req, res, next) => {
   const username = req.body.username;
+  const email = req.body.email;
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
 
   const sqlText = `
     INSERT INTO "user"
-      ("username", "password")
+      ("username", "email", "password")
       VALUES
-      ($1, $2);
+      ($1, $2, $3);
   `;
-  const sqlValues = [username, hashedPassword];
+  const sqlValues = [username, email, hashedPassword];
 
   pool.query(sqlText, sqlValues)
     .then(() => {
