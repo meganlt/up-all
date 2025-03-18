@@ -11,11 +11,48 @@ DROP TABLE IF EXISTS "user";
 CREATE TABLE "user" (
   "id" SERIAL PRIMARY KEY,
   "username" VARCHAR (80) UNIQUE NOT NULL,
+  "email" VARCHAR UNIQUE NOT NULL,
   "password" VARCHAR (1000) NOT NULL,
   "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+  "role" VARCHAR (80),
+  "first_name" VARCHAR (100),
+  "last_name" VARCHAR (100),
+  "pronouns" VARCHAR (100),
+  "company" VARCHAR (255),
+  "job_title" VARCHAR (255)
 );
 
+CREATE TABLE "dashboard_week" (
+  "id" SERIAL PRIMARY KEY,
+  "week_number" INTEGER,
+  "active_date_start" DATE,
+  "active_date_end" DATE,
+  "theme" VARCHAR (255),
+  "content" TEXT,
+  "focus" TEXT,
+  "created_at" TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE "check_ins" (
+  "id" SERIAL PRIMARY KEY,
+  "associate_id" INT REFERENCES "user",
+  "manager_id" INT REFERENCES "user",
+  "week_of" DATE,
+  "job_satisfaction" INT,
+  "workload_balance" INT,
+  "motivation" INT,
+  "manager_support" INT,
+  "growth_opportunity" INT,
+  "focus_for_week" TEXT,
+  "progress_from_last_week" TEXT,
+  "blockers" TEXT,
+  "feedback_for_manager" TEXT,
+  "workload_feelings" TEXT,
+  "skill_development" TEXT,
+  "created_at" TIMESTAMPTZ,
+  "updated_at" TIMESTAMPTZ
+);
 
 -------------------------------------------------------
 --------------------------------------------------
