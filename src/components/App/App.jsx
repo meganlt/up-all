@@ -10,15 +10,23 @@ import Nav from '../Nav/Nav';
 import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
-
+// Admin Includes
+import AdminManageUsers from '../AdminManageUsers/AdminManagerUsers';
+// Manager Includes
+import ManagerDashboard from '../ManagerDashboard/ManagerDashboard';
 
 function App() {
   const user = useStore((state) => state.user);
+  const isLoading = useStore((state)=>state.isUserLoading);
   const fetchUser = useStore((state) => state.fetchUser);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
+
+  if (isLoading){
+    return <p>Loading...</p>
+  }
 
   return (
     <>
@@ -31,9 +39,20 @@ function App() {
           <Route 
             exact path="/"
             element={
-              user.id ? (
-                <HomePage /> // Render HomePage for authenticated user.
-              ) : (
+              user.id && user.role == "admin" ? (
+                <AdminManageUsers /> // Redirect authenticated ADMIN
+              ) : 
+              user.id && user.role == "manager" ?
+              (
+                <Navigate to="/manager-dashboard" replace /> // Redirect authenticated MANAGER.
+              ) : 
+              user.id && user.role == "associate" ? (
+                <HomePage/> // Redirect authenticated ASSOCIATE
+              ) : 
+              user.id && user.role == null ? (
+                <HomePage/> // Render HomePage for authenticated user without role assigned
+              ) :
+              (
                 <Navigate to="/login" replace /> // Redirect unauthenticated user.
               )
             }
@@ -59,6 +78,18 @@ function App() {
             }
           />
           <Route 
+            exact path="/manager-dashboard"
+            element={
+              user.id ? (
+                <ManagerDashboard/> // Redirect authenticated user.
+              ) : (
+                <LoginPage /> // Render LoginPage for unauthenticated user.
+              )
+            }
+          />
+          
+
+          {/* <Route 
             exact path="/about"
             element={
               <>
@@ -90,7 +121,7 @@ function App() {
                 </p>
               </>
             }
-          />
+          /> */}
           <Route
             path="*"
             element={

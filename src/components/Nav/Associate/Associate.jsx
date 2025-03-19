@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import useStore from "../../../../zustand/store";
+import useStore from "../../../zustand/store";
 
 function Associate() {
     const user = useStore((store) => store.user);
+    const logOut = useStore((state) => state.logOut);
     
     return (
         <nav>
@@ -10,10 +11,13 @@ function Associate() {
             {user.id && (
             <>
                 <li>
-                <NavLink to="/associate">Associate</NavLink>
+                <NavLink to="/associate-dashboard">My Dashboard</NavLink>
                 </li>
                 <li>
-                <NavLink to="/associate/dashboard">My Dashboard</NavLink>
+                <NavLink to="/my-account">{user.username}'s account</NavLink>
+                </li>
+                <li>
+                    <button onClick={logOut}>Log Out</button>
                 </li>
             </>
             )}
