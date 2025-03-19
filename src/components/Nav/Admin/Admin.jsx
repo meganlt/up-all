@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import useStore from "../../../../zustand/store";
+import useStore from "../../../zustand/store";
 
 function Admin() {
     const user = useStore((store) => store.user);
+    const logOut = useStore((state) => state.logOut);
     
     return (
         <nav>
@@ -10,16 +11,16 @@ function Admin() {
             {user.id && (
             <>
                 <li>
-                <NavLink to="/admin">Admin</NavLink>
+                <NavLink to="/admin-manage-users">Manage Users</NavLink>
                 </li>
                 <li>
-                <NavLink to="/admin/dashboard">My Dashboard</NavLink>
+                <NavLink to="/admin-manage-weekly-content">Manage Weekly content</NavLink>
                 </li>
                 <li>
-                <NavLink to="/admin/users">Manager users</NavLink>
+                <NavLink to="/my-account">{user.username}'s account</NavLink>
                 </li>
                 <li>
-                <NavLink to="/admin/weekly">Weekly content</NavLink>
+                    <button onClick={logOut}>Log Out</button>
                 </li>
             </>
             )}
