@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import useStore from '../../zustand/store';
+import Admin from './Admin/Admin';
 import Manager from './Manager/Manager';
+import Associate from './Associate/Associate';
 
 function Nav() {
   const user = useStore((store) => store.user);
@@ -21,22 +23,18 @@ function Nav() {
         )
       }
       { // User is logged in, render these links:
-        
         user.id && user.role === "manager" ? (
-          // <li>manager links</li>
+          // Manager Links:
           <Manager/>
         ) : user.id && user.role === "associate" ? (
-          <li>non-manager links</li>
+          // Associate Links:
+          <Associate/>
         ) : user.id && user.role === "admin" ? (
-          <li>admin links</li>
-        ) : (
+          <Admin/>
+        ) : user.id && (
           <li>in limbo links</li>
         )
       }
-      {/* Show these links regardless of auth status: */}
-        <li>
-          <NavLink to="/about">About</NavLink>
-        </li>
       </ul>
     </nav>
   );

@@ -40,15 +40,19 @@ function App() {
             exact path="/"
             element={
               user.id && user.role == "admin" ? (
-                <AdminManageUsers /> // Render HomePage for authenticated user.
+                <AdminManageUsers /> // Redirect authenticated ADMIN
               ) : 
               user.id && user.role == "manager" ?
               (
-                <Navigate to="/manager-dashboard" replace /> // Redirect unauthenticated user.
+                <Navigate to="/manager-dashboard" replace /> // Redirect authenticated MANAGER.
               ) : 
               user.id && user.role == "associate" ? (
-                <HomePage/>
-              ) : (
+                <HomePage/> // Redirect authenticated ASSOCIATE
+              ) : 
+              user.id && user.role == null ? (
+                <HomePage/> // Render HomePage for authenticated user without role assigned
+              ) :
+              (
                 <Navigate to="/login" replace /> // Redirect unauthenticated user.
               )
             }
