@@ -15,6 +15,12 @@ function Admin() {
                 <li>
                 <NavLink to="/admin/dashboard">My Dashboard</NavLink>
                 </li>
+                <li>
+                <NavLink to="/admin/users">Manager users</NavLink>
+                </li>
+                <li>
+                <NavLink to="/admin/weekly">Weekly content</NavLink>
+                </li>
             </>
             )}
         </ul>
