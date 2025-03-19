@@ -13,6 +13,7 @@ function HomePage() {
       <button onClick={logOut}>
         Log Out
       </button>
+      {JSON.stringify(user)}
     </>
   );
 }
