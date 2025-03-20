@@ -27,11 +27,11 @@ router.post('/register', (req, res, next) => {
 
   const sqlText = `
     INSERT INTO "user"
-      ("username", "email", "password")
+      ("username", "email", "password", "role")
       VALUES
-      ($1, $2, $3);
+      ($1, $2, $3, $4);
   `;
-  const sqlValues = [username, email, hashedPassword];
+  const sqlValues = [username, email, hashedPassword, 'pending'];
 
   pool.query(sqlText, sqlValues)
     .then(() => {

@@ -13,8 +13,8 @@ const passport = require('./strategies/user.strategy');
 
 // Require router files:
 const userRouter = require('./routes/user.router');
-const meowRouter = require('./routes/meow.router');
-const woofRouter = require('./routes/woof.router');
+const adminRouter = require('./routes/admin.router'); // dummy router
+const weekRouter = require('./routes/week.router')
 // Apply middleware:
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -25,8 +25,8 @@ app.use(passport.session());
 
 // Apply router files:
 app.use('/api/user', userRouter);
-app.use('/api/meow', meowRouter);
-app.use('/api/woof', woofRouter);
+app.use('/api/week', weekRouter);
+app.use('/api/admin', adminRouter); 
 // Start the server:
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);

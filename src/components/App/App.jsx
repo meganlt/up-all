@@ -10,10 +10,13 @@ import Nav from '../Nav/Nav';
 import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import PendingPage from '../PendingPage/PendingPage';
 // Admin Includes
 import AdminManageUsers from '../AdminManageUsers/AdminManagerUsers';
 // Manager Includes
 import ManagerDashboard from '../ManagerDashboard/ManagerDashboard';
+// Associate Includes
+import AssociateDashboard from '../AssociateDashboard/AssociateDashboard';
 
 function App() {
   const user = useStore((state) => state.user);
@@ -40,17 +43,17 @@ function App() {
             exact path="/"
             element={
               user.id && user.role == "admin" ? (
-                <AdminManageUsers /> // Redirect authenticated ADMIN
+                <Navigate to="/admin-manage-users" replace /> // Redirect authenticated ADMIN
               ) : 
               user.id && user.role == "manager" ?
               (
                 <Navigate to="/manager-dashboard" replace /> // Redirect authenticated MANAGER.
               ) : 
               user.id && user.role == "associate" ? (
-                <HomePage/> // Redirect authenticated ASSOCIATE
+                <Navigate to="/associate-dashboard" replace /> // Redirect authenticated ASSOCIATE
               ) : 
-              user.id && user.role == null ? (
-                <HomePage/> // Render HomePage for authenticated user without role assigned
+              user.id && user.role == "pending" ? (
+                <PendingPage/> // Render HomePage for authenticated user without role assigned
               ) :
               (
                 <Navigate to="/login" replace /> // Redirect unauthenticated user.
@@ -78,6 +81,16 @@ function App() {
             }
           />
           <Route 
+            exact path="/admin-manage-users"
+            element={
+              user.id && user.role == "admin" ? (
+                <AdminManageUsers/> // Redirect authenticated user.
+              ) : (
+                <LoginPage /> // Render LoginPage for unauthenticated user.
+              )
+            }
+          />
+          <Route 
             exact path="/manager-dashboard"
             element={
               user.id ? (
@@ -86,6 +99,17 @@ function App() {
                 <LoginPage /> // Render LoginPage for unauthenticated user.
               )
             }
+          />
+
+          <Route
+          exact path="/associate-dashboard"
+          element={
+            user.id ? (
+              <AssociateDashboard/>  // Redirect authenticated user.
+            ):(
+              <LoginPage /> // Render LoginPage for unauthenticated user.
+            )
+          }
           />
           
 

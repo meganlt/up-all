@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import useStore from "../../../../zustand/store";
 
-function Guest() {
+function Pending() {
     const user = useStore((store) => store.user);
     
     return (
@@ -10,11 +10,12 @@ function Guest() {
             {user.id && (
             <>
                 <li>
-                <NavLink to="/guests">Guests</NavLink>
+                <NavLink to="/pending-role">Guests</NavLink>
                 </li>
                 <li>
-                <NavLink to="/guests/guest">Guest</NavLink>
+                <NavLink to="/my-account">{user.username}'s account</NavLink>
                 </li>
+                
             </>
             )}
         </ul>
@@ -22,4 +23,4 @@ function Guest() {
     );
 }
 
-export default Guest;
+export default Pending;
