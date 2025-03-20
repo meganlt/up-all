@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import useStore from '../../zustand/store';
 import Admin from './Admin/Admin';
-import Manager from './Manager/Manager';
-import Associate from './Associate/Associate';
+import Manager from './NavManager/NavManager';
+import Associate from './NavAssociate/NavAssociate';
 
 function Nav() {
   const user = useStore((store) => store.user);

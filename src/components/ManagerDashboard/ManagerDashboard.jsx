@@ -3,8 +3,7 @@ import useStore from '../../zustand/store';
 
 
 function ManagerDashboard() {
-  
-  const [ hook, setHook ] = useState( '' );
+  const user = useStore((state) => state.user);
 
   return (
     <>
