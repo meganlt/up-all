@@ -4,7 +4,15 @@ const pool = require('../modules/pool');
 
 // Get all app users:
 router.get('/users', (req, res)=>{
-  const queryString = `SELECT * FROM "user" WHERE "role" != 'pending' AND "role" != 'admin' ORDER BY "id" DESC;`;
+  const queryString = `
+  SELECT 
+    u.*,
+    m.username AS manager_username
+  FROM "user" u
+  LEFT JOIN "user" m ON u.manager_assigned = m.id
+  WHERE u.role != 'pending' AND u.role !='admin' 
+  ORDER BY "id";
+  `;
   pool.query( queryString ).then( (results)=>{
       res.send( results.rows );
   }).catch( (err)=>{
@@ -23,8 +31,6 @@ router.get('/pending', (req, res)=>{
       res.sendStatus(400);
   })
 })
-
-// Update pending app user:
 
 
 module.exports = router;

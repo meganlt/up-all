@@ -48,6 +48,8 @@ function AdminManageUsers() {
             <tr>
               <th>Email</th>
               <th>Username</th>
+              <th>Role</th>
+              <th>Manager Assigned</th>
               <th>Company</th>
               <th>Actions</th>
             </tr>
@@ -58,6 +60,8 @@ function AdminManageUsers() {
               <tr key={index}>
                 <td>{userToEdit.email}</td>
                 <td>{userToEdit.username}</td>
+                <td>{userToEdit.role}</td>
+                <td>{userToEdit.manager_username}</td>
                 <td>{userToEdit.company}</td>
                 <td><AdminEditUser userToEdit={userToEdit}/></td>
               </tr>

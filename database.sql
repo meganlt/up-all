@@ -20,7 +20,8 @@ CREATE TABLE "user" (
   "last_name" VARCHAR (100),
   "pronouns" VARCHAR (100),
   "company" VARCHAR (255),
-  "job_title" VARCHAR (255)
+  "job_title" VARCHAR (255),
+  "manager_assigned" INT REFERENCES "user"
 );
 
 CREATE TABLE "dashboard_week" (
@@ -53,6 +54,9 @@ CREATE TABLE "check_ins" (
   "created_at" TIMESTAMPTZ,
   "updated_at" TIMESTAMPTZ
 );
+
+-- Table edits:
+ALTER TABLE "user" ADD COLUMN manager_id INT REFERENCES "user"(id);
 
 -------------------------------------------------------
 --------------------------------------------------

@@ -75,7 +75,6 @@ function AdminEditUser(userToEdit) {
           )
         }
           User: {userToEdit.userToEdit.username}
-
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -90,12 +89,23 @@ function AdminEditUser(userToEdit) {
           <CloseIcon />
         </IconButton>
         <DialogContent className="edit-container" dividers>
-        Form content will go here
+          <div>
+          Email: {userToEdit.userToEdit.email} <br/>
+          Username: {userToEdit.userToEdit.username}<br/>
+          Company: {userToEdit.userToEdit.company}
+          </div>
+          <div>
+          Role: <br/>
+          <select defaultValue={userToEdit.userToEdit.role}>
+            <option value="manager">Manager</option>
+            <option value="associate">Associate</option>
+            <option value="pending">Pending</option>
+          </select>
+          </div>
         
           
           
         </DialogContent>
-        
         <DialogActions>
           {
             userToEdit.userToEdit.role === "pending" ? (
