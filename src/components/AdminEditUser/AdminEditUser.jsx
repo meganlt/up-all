@@ -31,11 +31,27 @@ function AdminEditUser(userToEdit) {
   function editOtherUser(e){
     e.preventDefault();
     console.log('in editOtherUser');
+
     // if its a new user without a role:
     //   if no role yet, set role according to the value ken picks
     //   set manager according to username set in input field
     // otherwise update any info that's changed?
-    // clear form details
+
+    // clear form details to reset for next open
+    clearForm();
+    // close dialog
+    handleEditClose();
+  }
+
+  function deleteOtherUser(e){
+    e.preventDefault();
+    console.log('in deleteOtherUser');
+
+    // check if user is a manager
+    // if so, return error to reassign or delete their associates first
+    // otherwise, axios delete this user
+
+    // clear form details to reset for next open
     clearForm();
     // close dialog
     handleEditClose();
@@ -95,12 +111,22 @@ function AdminEditUser(userToEdit) {
           Company: {userToEdit.userToEdit.company}
           </div>
           <div>
-          Role: <br/>
+          <br/>
+          <label>Role:</label>
           <select defaultValue={userToEdit.userToEdit.role}>
             <option value="manager">Manager</option>
             <option value="associate">Associate</option>
             <option value="pending">Pending</option>
           </select>
+          <br/> <br/>
+          <label>Manager's Username:</label>
+          <input type="text" value={userToEdit.userToEdit.manager_username}/>
+          <br/>
+          <label>Company:</label>
+          <input type="text" value={userToEdit.userToEdit.company}/>
+          <br/>
+          <label>Set Temporary Password:</label>
+          <input type="text" />
           </div>
         
           
@@ -109,9 +135,22 @@ function AdminEditUser(userToEdit) {
         <DialogActions>
           {
             userToEdit.userToEdit.role === "pending" ? (
-              <button type="submit">Assign User</button>
+              <>
+                <button>reject</button>
+                <button type="submit">Assign User</button>
+              </>
+
             ): (
-              <button type="submit">Edit User</button>
+              <>
+                
+                <p>
+                  Delete Warning: this cannot be undone.<br/>
+                  If this is a manager, please delete or reassign their assigned associates first. <br/>
+                <button onClick={deleteOtherUser}>delete user</button>
+                </p>
+                <button type="submit">Edit User</button>
+              </>
+              
             )
           }
         </DialogActions>
