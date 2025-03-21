@@ -56,7 +56,7 @@ CREATE TABLE "check_ins" (
 );
 
 -- Table edits:
-ALTER TABLE "user" ADD COLUMN manager_id INT REFERENCES "user"(id);
+ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
 
 -------------------------------------------------------
 --------------------------------------------------
