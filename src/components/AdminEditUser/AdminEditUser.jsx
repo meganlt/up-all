@@ -20,13 +20,15 @@ import Select from '@mui/material/Select';
 
 function AdminEditUser(userToEdit) {
   const user = useStore((state) => state.user);
+  const pendingUsers = useStore((state) => state.pendingUsers);
+  const fetchPendingUsers = useStore((state) => state.fetchPendingUsers);
+  const assignedUsers = useStore((state) => state.assignedUsers);
+  const fetchAssignedUsers = useStore((state) => state.fetchAssignedUsers);
 
   // Initial hook and setup for dialog
   const [openEdit, setOpenEdit] = useState(false);
   const handleEditClickOpen = () => {  setOpenEdit(true);};
   const handleEditClose = () => {  setOpenEdit(false); };
-
-  console.log(userToEdit.userToEdit);
     
   function editOtherUser(e){
     e.preventDefault();
@@ -36,6 +38,25 @@ function AdminEditUser(userToEdit) {
     //   if no role yet, set role according to the value ken picks
     //   set manager according to username set in input field
     // otherwise update any info that's changed?
+    // assemble objectToSend
+    let objectToSend = {
+      userId: userToEdit.userToEdit.id,
+      userRole: document.getElementById('editRoleInput').value,
+      userManager: document.getElementById('editManagerInput').value,
+      userCompany: document.getElementById('editCompanyInput').value,
+      userPassword: document.getElementById('editPasswordInput').value
+    }
+
+    // send objectToSend to server to update
+    axios.put('/api/admin/user', objectToSend).then( function( response){
+      console.log(response);
+      fetchPendingUsers();
+      fetchAssignedUsers();
+
+    } ).catch( function(err){
+      console.log(err);
+      alert('error updating user');
+    })
 
     // clear form details to reset for next open
     clearForm();
@@ -120,10 +141,10 @@ function AdminEditUser(userToEdit) {
           </select>
           <br/> <br/>
           <label>Manager's Username:</label>
-          <input id="editManagerInput" type="text" value={userToEdit.userToEdit.manager_username}/>
+          <input id="editManagerInput" type="text" defaultValue={userToEdit.userToEdit.manager_username}/>
           <br/>
           <label>Company:</label>
-          <input id="editCompanyInput" type="text" value={userToEdit.userToEdit.company}/>
+          <input id="editCompanyInput" type="text" defaultValue={userToEdit.userToEdit.company}/>
           <br/>
           <label>Set Temporary Password:</label>
           <input id="editPasswordInput" type="text" />
