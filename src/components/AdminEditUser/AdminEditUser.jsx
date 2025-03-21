@@ -113,20 +113,20 @@ function AdminEditUser(userToEdit) {
           <div>
           <br/>
           <label>Role:</label>
-          <select defaultValue={userToEdit.userToEdit.role}>
+          <select id="editRoleInput" defaultValue={userToEdit.userToEdit.role}>
             <option value="manager">Manager</option>
             <option value="associate">Associate</option>
             <option value="pending">Pending</option>
           </select>
           <br/> <br/>
           <label>Manager's Username:</label>
-          <input type="text" value={userToEdit.userToEdit.manager_username}/>
+          <input id="editManagerInput" type="text" value={userToEdit.userToEdit.manager_username}/>
           <br/>
           <label>Company:</label>
-          <input type="text" value={userToEdit.userToEdit.company}/>
+          <input id="editCompanyInput" type="text" value={userToEdit.userToEdit.company}/>
           <br/>
           <label>Set Temporary Password:</label>
-          <input type="text" />
+          <input id="editPasswordInput" type="text" />
           </div>
         
           
