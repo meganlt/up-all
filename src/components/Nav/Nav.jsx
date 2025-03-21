@@ -3,6 +3,8 @@ import useStore from '../../zustand/store';
 import Admin from './Admin/Admin';
 import Manager from './NavManager/NavManager';
 import Associate from './NavAssociate/NavAssociate';
+import UserAccount from './NavUserAccount/NavUserAccount';
+
 
 function Nav() {
   const user = useStore((store) => store.user);

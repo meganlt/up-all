@@ -24,5 +24,7 @@ router.get('/pending', (req, res)=>{
   })
 })
 
+// Update pending app user:
+
 
 module.exports = router;
