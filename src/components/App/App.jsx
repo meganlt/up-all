@@ -11,6 +11,7 @@ import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import PendingPage from '../PendingPage/PendingPage';
+import UserAccountPage from '../UserAccountPage/UserAccountPage';
 // Admin Includes
 import AdminManageUsers from '../AdminManageUsers/AdminManagerUsers';
 // Manager Includes
