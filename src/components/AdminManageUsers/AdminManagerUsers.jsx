@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
-
+import AdminEditUser from '../AdminEditUser/AdminEditUser';
 
 function AdminManageUsers() {
   const pendingUsers = useStore((state) => state.pendingUsers);
@@ -18,14 +18,53 @@ function AdminManageUsers() {
       <h1>Manage Users</h1>
       <div>
         <h2>Users To Assign:</h2>
-        {JSON.stringify(pendingUsers)}
-        <ul>
-          <li>List people here <button>reject</button><button>assign</button></li>
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Username</th>
+              <th>Company</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {
+            pendingUsers.map( (userToEdit, index)=>(
+              <tr key={index}>
+                <td>{userToEdit.email}</td>
+                <td>{userToEdit.username}</td>
+                <td>{userToEdit.company}</td>
+                <td><AdminEditUser userToEdit={userToEdit}/></td>
+              </tr>
+            ))
+          }
+          </tbody>
+        </table>
       </div>
       <div>
         <h2>All Users:</h2>
-        {JSON.stringify(assignedUsers)}
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Username</th>
+              <th>Company</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {
+            assignedUsers.map( (userToEdit, index)=>(
+              <tr key={index}>
+                <td>{userToEdit.email}</td>
+                <td>{userToEdit.username}</td>
+                <td>{userToEdit.company}</td>
+                <td><AdminEditUser userToEdit={userToEdit}/></td>
+              </tr>
+            ))
+          }
+          </tbody>
+        </table>
       </div>
     </>
   );

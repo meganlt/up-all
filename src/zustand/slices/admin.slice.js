@@ -28,12 +28,6 @@ const createAdminSlice = (set, get) => ({
       console.log('fetchUser error:', err);
       set({pendingUsers : {}});
     }
-  },
-  editUser: function(){
-    // if its a new user without a role:
-    //   if no role yet, set role according to the value ken picks
-    //   set manager according to username set in input field
-    // otherwise update any info that's changed?
   }
 })
 
