@@ -97,8 +97,13 @@ router.put('/user', async (req, res) => {
 router.delete('/user', (req, res)=>{
   console.log(req.body, req.query);
   const userToDelete = req.query.id;
-
-  // Do i need to check database for if they are a manager, with associates assigned?
+  const queryString = `DELETE FROM "user" WHERE id=$1;`
+  pool.query( queryString, [userToDelete]).then( (results)=>{
+    res.sendStatus(200);
+  }).catch( (err)=>{
+    console.log(err);
+    res.sendStatus(400);
+  })
   
 })
 
