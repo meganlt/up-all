@@ -66,11 +66,31 @@ function AdminEditUser(userToEdit) {
 
   function deleteOtherUser(e){
     e.preventDefault();
-    console.log('in deleteOtherUser');
-
+    console.log('in deleteOtherUser', userToEdit.userToEdit);
+    const userToDelete = userToEdit.userToEdit.id;
     // check if user is a manager
-    // if so, return error to reassign or delete their associates first
+    if (userToEdit.userToEdit.role === "manager"){
+      // if so, do they have any asociates assigned yet?
+      // look through array of assigned users to find anyone with this m anager's id set for "manager_assigned"
+      const managerAssignees = assignedUsers.filter(
+        (assignedUser)=>{
+          return assignedUser.manager_assigned == userToDelete;
+        });
+        console.log(`Manager still has these users assigned:`, managerAssignees);
+        // If there are any assigned users, notify the admin.
+        if (managerAssignees.length > 0 ){
+          alert('The person you are trying to delete still has ' + managerAssignees.length + ' users assigned. Please reassign these users to other managers first.');
+          // exit the function and stop the delete process
+          return false;
+        }
+    }
     // otherwise, axios delete this user
+    axios.delete(`/api/admin/user?id=${userToEdit.userToEdit.id}`).then( function(response){
+      console.log('back from delete:', response.data);
+    }).catch( function(err){
+      console.log(err);
+      alert('error deleting user');
+    });
 
     // clear form details to reset for next open
     clearForm();
