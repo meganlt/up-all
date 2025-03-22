@@ -13,7 +13,7 @@ const passport = require('./strategies/user.strategy');
 
 // Require router files:
 const userRouter = require('./routes/user.router');
-const adminRouter = require('./routes/admin.router'); // dummy router
+const adminRouter = require('./routes/admin.router'); 
 const weekRouter = require('./routes/week.router')
 // Apply middleware:
 app.use(express.json());
