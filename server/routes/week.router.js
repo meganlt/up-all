@@ -18,7 +18,8 @@ router.get('/', (req, res) => {
   `
   pool.query(queryText)
     .then((result) => {
-      res.status(200).json(result.rows);
+      res.send(result.rows)
+      // res.status(200).json(result.rows);
     })
     .catch((err) => {
       console.log('Error fetching week:', err);
