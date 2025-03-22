@@ -112,6 +112,17 @@ function App() {
             )
           }
           />
+
+<Route
+          exact path="/my-account"
+          element={
+            user.id ? (
+              <UserAccountPage/>  // Redirect authenticated user.
+            ):(
+              <LoginPage /> // Render LoginPage for unauthenticated user.
+            )
+          }
+          />
           
 
           {/* <Route 
