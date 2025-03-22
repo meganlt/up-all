@@ -87,6 +87,8 @@ function AdminEditUser(userToEdit) {
     // otherwise, axios delete this user
     axios.delete(`/api/admin/user?id=${userToEdit.userToEdit.id}`).then( function(response){
       console.log('back from delete:', response.data);
+      fetchPendingUsers();
+      fetchAssignedUsers();
     }).catch( function(err){
       console.log(err);
       alert('error deleting user');
@@ -177,7 +179,7 @@ function AdminEditUser(userToEdit) {
           {
             userToEdit.userToEdit.role === "pending" ? (
               <>
-                <button>reject</button>
+                <button onClick={deleteOtherUser}>reject</button>
                 <button type="submit">Assign User</button>
               </>
 
