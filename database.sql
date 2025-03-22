@@ -24,15 +24,26 @@ CREATE TABLE "user" (
   "manager_assigned" INT REFERENCES "user"
 );
 
-CREATE TABLE "dashboard_week" (
-  "id" SERIAL PRIMARY KEY,
-  "week_number" INTEGER,
-  "active_date_start" DATE,
-  "active_date_end" DATE,
-  "theme" VARCHAR (255),
-  "content" TEXT,
-  "focus" TEXT,
-  "created_at" TIMESTAMPTZ DEFAULT now()
+-- ** OLD TABLE DO NOT USE
+-- CREATE TABLE "dashboard_week" (
+--  "id" SERIAL PRIMARY KEY,
+--  "week_number" INTEGER,
+--  "active_date_start" DATE,
+--  "active_date_end" DATE,
+--  "theme" VARCHAR (255),
+--  "content" TEXT,
+--  "focus" TEXT,
+--  "created_at" TIMESTAMPTZ DEFAULT now()
+-- );
+
+CREATE TABLE dashboard_week (
+  "id" PRIMARY KEY DEFAULT,
+  "title" VARCHAR(255) NOT NULL,
+  "theme" VARCHAR(255) NOT NULL,
+  "content" TEXT NOT NULL,
+  "focus" TEXT NOT NULL,   
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "check_ins" (
@@ -57,6 +68,35 @@ CREATE TABLE "check_ins" (
 
 -- Table edits:
 ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
+
+-- *** QUERIES FOR DASHBOARD_WEEK TABLE ***
+
+-- EDIT EXISTING dashboard_week TABLE
+-- 1. Remove Columns
+ALTER TABLE "dashboard_week"
+  DROP COLUMN IF EXISTS "week_number",
+  DROP COLUMN IF EXISTS "active_date_start",
+  DROP COLUMN IF EXISTS "active_date_end";
+-- 2. Add Columns
+ALTER TABLE "dashboard_week"
+  ADD COLUMN IF NOT EXISTS "title" VARCHAR(255) NOT NULL,
+  ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMPTZ DEFAULT now();
+-- 3. Modify Columns to NOT NULL
+ALTER TABLE "dashboard_week"
+  ALTER COLUMN "theme" SET NOT NULL,
+  ALTER COLUMN "content" SET NOT NULL,
+  ALTER COLUMN "focus" SET NOT NULL;
+
+-- GET ROUTE QUERIE (fetch all weekly content)
+SELECT * FROM "dashboard_week" ORDER BY created_at DESC;
+-- GET ROUTE QUERIE( fetch a single dashboard week by ID)
+SELECT * FROM "dashboard_week" WHERE id = $1;
+-- POST ROUTE QUERIE (insert a new submission)
+INSERT INTO "dashboard_week" (title, theme, content, focus) VALUES ($1, $2, $3, $4) RETURNING *;
+-- PUT ROUTE QUERIE (update a specific a specific dasboard week)
+UPDATE "dashboard_week" SET title = $1, theme = $2, content = $3, focus = $4, updated_at = now() WHERE id = $5 RETURNING *;
+-- DELETE ROUTE QUERIE (remove an existing dashboard week)
+DELETE FROM "dashboard_week" WHERE id = $1 RETURNING *;
 
 -------------------------------------------------------
 --------------------------------------------------
