@@ -93,5 +93,14 @@ router.put('/user', async (req, res) => {
   }
 });
 
+// Delete User
+router.delete('/user', (req, res)=>{
+  console.log(req.body, req.query);
+  const userToDelete = req.query.id;
+
+  // Do i need to check database for if they are a manager, with associates assigned?
+  
+})
+
 
 module.exports = router;
