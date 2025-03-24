@@ -46,6 +46,16 @@ CREATE TABLE dashboard_week (
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE "company_assignment" (
+  "id" SERIAL PRIMARY KEY,
+  "company_name" VARCHAR(255) NOT NULL,
+  "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
+  "active_date_start" DATE NOT NULL,
+  "active_date_end" DATE NOT NULL,
+  "created_at" TIMESTAMPTZ DEFAULT now(),
+  "updated_at" TIMESTAMPTZ DEFAULT now()
+);
+
 CREATE TABLE "check_ins" (
   "id" SERIAL PRIMARY KEY,
   "associate_id" INT REFERENCES "user",
@@ -66,10 +76,21 @@ CREATE TABLE "check_ins" (
   "updated_at" TIMESTAMPTZ
 );
 
--- Table edits:
-ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
+CREATE TABLE "manager_check_ins" (
+  "id" SERIAL PRIMARY KEY,
+  "manager_id" INT REFERENCES "user"(id) ON DELETE CASCADE,
+  "dashboard_week_id" INT REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
+  "follow_up" BOOLEAN DEFAULT FALSE,
+  "status_read" BOOLEAN DEFAULT FALSE,
+  "created_at" TIMESTAMPTZ DEFAULT now(),
+  "updated_at" TIMESTAMPTZ DEFAULT now()
+);
 
--- *** QUERIES FOR DASHBOARD_WEEK TABLE ***
+---------- *** TABLE EDITS *** ----------
+ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
+ALTER TABLE "check_ins" ADD COLUMN "tasks" TEXT;
+
+---------- *** QUERIES FOR DASHBOARD_WEEK TABLE *** ----------
 
 -- EDIT EXISTING dashboard_week TABLE
 -- 1. Remove Columns
@@ -89,14 +110,120 @@ ALTER TABLE "dashboard_week"
 
 -- GET ROUTE QUERIE (fetch all weekly content)
 SELECT * FROM "dashboard_week" ORDER BY created_at DESC;
--- GET ROUTE QUERIE( fetch a single dashboard week by ID)
+
+-- GET ROUTE QUERIE (fetch a single dashboard week by ID)
 SELECT * FROM "dashboard_week" WHERE id = $1;
+
 -- POST ROUTE QUERIE (insert a new submission)
 INSERT INTO "dashboard_week" (title, theme, content, focus) VALUES ($1, $2, $3, $4) RETURNING *;
+
 -- PUT ROUTE QUERIE (update a specific a specific dasboard week)
 UPDATE "dashboard_week" SET title = $1, theme = $2, content = $3, focus = $4, updated_at = now() WHERE id = $5 RETURNING *;
+
 -- DELETE ROUTE QUERIE (remove an existing dashboard week)
 DELETE FROM "dashboard_week" WHERE id = $1 RETURNING *;
+
+---------- *** QUERIES FOR COMPANY_ASSIGNMENT TABLE *** ----------
+
+-- GET ROUTE QUERIE (fetch all company assignments - for all companies)
+SELECT "company_assignment".*, "dashboard_week".title 
+FROM "company_assignment"
+JOIN "dashboard_week" 
+ON "company_assignment".dashboard_week_id = "dashboard_week".id
+ORDER BY "company_assignment".created_at DESC;
+
+-- GET ROUTE QUERIE (fetch a single company's assignment - filtered by company name)
+SELECT "company_assignment".*, "dashboard_week".title 
+FROM "company_assignment"
+JOIN "dashboard_week" 
+ON "company_assignment".dashboard_week_id = "dashboard_week".id
+WHERE "company_assignment".company_name = $1
+ORDER BY "company_assignment".active_date_start;
+
+-- POST ROUTE QUERIE (insert a new company assignment)
+INSERT INTO "company_assignment" (company_name, dashboard_week_id, active_date_start, active_date_end) VALUES ($1, $2, $3, $4) RETURNING *;
+
+-- PUT ROUTE QUERIE (update a specific company assignment)
+UPDATE "company_assignment" SET company_name = $1, dashboard_week_id = $2, active_date_start = $3, active_date_end = $4, updated_at = now() WHERE id = $5 RETURNING *;
+
+-- DELETE ROUTE QUERIE (remove an assignment)
+DELETE FROM "company_assignment" WHERE id = $1 RETURNING *;
+
+---------- *** QUERIES FOR CHECK_INS TABLE *** ----------
+
+-- GET ROUTE QUERIE (fetch all check-ins)
+SELECT * FROM "check_ins" ORDER BY "created_at" DESC;
+
+-- GET ROUTE QUERIE (fetch a single check-in by ID)
+SELECT * FROM "check_ins" WHERE "id" = $1;
+
+-- POST ROUTE QUERIE (insert a new check-in (create a new entry))
+INSERT INTO "check_ins" (
+  "associate_id", "manager_id", "week_of", "job_satisfaction",
+  "workload_balance", "motivation", "manager_support", "growth_opportunity",
+  "focus_for_week", "progress_from_last_week", "blockers",
+  "feedback_for_manager", "workload_feelings", "skill_development", "tasks"
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *;
+
+-- PUT ROUTE QUERIE (update a specific an existing check-in by ID)
+UPDATE "check_ins" 
+SET
+  "associate_id" = $1,
+  "manager_id" = $2,
+  "week_of" = $3,
+  "job_satisfaction" = $4,
+  "workload_balance" = $5,
+  "motivation" = $6,
+  "manager_support" = $7,
+  "growth_opportunity" = $8,
+  "focus_for_week" = $9,
+  "progress_from_last_week" = $10,
+  "blockers" = $11,
+  "feedback_for_manager" = $12,
+  "workload_feelings" = $13,
+  "skill_development" = $14,
+  "tasks" = $15,
+  "updated_at" = now()
+WHERE "id" = $16
+RETURNING *;
+
+-- DELETE ROUTE QUERIE (remove a check-in by ID)
+DELETE FROM "check_ins" WHERE "id" = $1 RETURNING *;
+
+---------- *** QUERIES FOR MANAGER_CHECK_INS TABLE *** ----------
+
+-- GET ROUTE QUERIE (fetch all manager check-ins)
+SELECT "manager_check_ins".*, "dashboard_week".title 
+FROM "manager_check_ins"
+JOIN "dashboard_week" 
+ON "manager_check_ins".dashboard_week_id = "dashboard_week".id
+ORDER BY "manager_check_ins".created_at DESC;
+
+-- GET ROUTE QUERIE (fetch check-ins for a specific manager (by manager ID))
+SELECT "manager_check_ins".*, "dashboard_week".title 
+FROM "manager_check_ins"
+JOIN "dashboard_week" 
+ON "manager_check_ins".dashboard_week_id = "dashboard_week".id
+WHERE "manager_check_ins".manager_id = $1
+ORDER BY "manager_check_ins".created_at DESC;
+
+-- POST ROUTE QUERIE (insert a new manager check-in)
+INSERT INTO "manager_check_ins" ("manager_id", "dashboard_week_id", "follow_up", "status_read") VALUES ($1, $2, $3, $4) RETURNING *;
+
+-- PUT ROUTE QUERIE (update a specific a specific dasboard week)
+UPDATE "manager_check_ins" 
+SET
+  "manager_id" = $1,
+  "dashboard_week_id" = $2,
+  "follow_up" = $3,
+  "status_read" = $4,
+  "updated_at" = now()
+WHERE "id" = $5
+RETURNING *;
+
+-- DELETE ROUTE QUERIE (remove a manager check-in by ID)
+DELETE FROM "manager_check_ins" WHERE "id" = $1 RETURNING *;
 
 -------------------------------------------------------
 --------------------------------------------------
