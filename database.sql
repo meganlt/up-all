@@ -86,11 +86,11 @@ CREATE TABLE "manager_check_ins" (
   "updated_at" TIMESTAMPTZ DEFAULT now()
 );
 
--- Table edits:
+---------- *** TABLE EDITS *** ----------
 ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
 ALTER TABLE "check_ins" ADD COLUMN "tasks" TEXT;
 
--- *** QUERIES FOR DASHBOARD_WEEK TABLE ***
+---------- *** QUERIES FOR DASHBOARD_WEEK TABLE *** ----------
 
 -- EDIT EXISTING dashboard_week TABLE
 -- 1. Remove Columns
@@ -123,7 +123,7 @@ UPDATE "dashboard_week" SET title = $1, theme = $2, content = $3, focus = $4, up
 -- DELETE ROUTE QUERIE (remove an existing dashboard week)
 DELETE FROM "dashboard_week" WHERE id = $1 RETURNING *;
 
--- *** QUERIES FOR COMPANY_ASSIGNMENT TABLE ***
+---------- *** QUERIES FOR COMPANY_ASSIGNMENT TABLE *** ----------
 
 -- GET ROUTE QUERIE (fetch all company assignments - for all companies)
 SELECT "company_assignment".*, "dashboard_week".title 
@@ -149,7 +149,7 @@ UPDATE "company_assignment" SET company_name = $1, dashboard_week_id = $2, activ
 -- DELETE ROUTE QUERIE (remove an assignment)
 DELETE FROM "company_assignment" WHERE id = $1 RETURNING *;
 
--- *** QUERIES FOR CHECK_INS TABLE ***
+---------- *** QUERIES FOR CHECK_INS TABLE *** ----------
 
 -- GET ROUTE QUERIE (fetch all check-ins)
 SELECT * FROM "check_ins" ORDER BY "created_at" DESC;
@@ -190,6 +190,40 @@ RETURNING *;
 
 -- DELETE ROUTE QUERIE (remove a check-in by ID)
 DELETE FROM "check_ins" WHERE "id" = $1 RETURNING *;
+
+---------- *** QUERIES FOR MANAGER_CHECK_INS TABLE *** ----------
+
+-- GET ROUTE QUERIE (fetch all manager check-ins)
+SELECT "manager_check_ins".*, "dashboard_week".title 
+FROM "manager_check_ins"
+JOIN "dashboard_week" 
+ON "manager_check_ins".dashboard_week_id = "dashboard_week".id
+ORDER BY "manager_check_ins".created_at DESC;
+
+-- GET ROUTE QUERIE (fetch check-ins for a specific manager (by manager ID))
+SELECT "manager_check_ins".*, "dashboard_week".title 
+FROM "manager_check_ins"
+JOIN "dashboard_week" 
+ON "manager_check_ins".dashboard_week_id = "dashboard_week".id
+WHERE "manager_check_ins".manager_id = $1
+ORDER BY "manager_check_ins".created_at DESC;
+
+-- POST ROUTE QUERIE (insert a new manager check-in)
+INSERT INTO "manager_check_ins" ("manager_id", "dashboard_week_id", "follow_up", "status_read") VALUES ($1, $2, $3, $4) RETURNING *;
+
+-- PUT ROUTE QUERIE (update a specific a specific dasboard week)
+UPDATE "manager_check_ins" 
+SET
+  "manager_id" = $1,
+  "dashboard_week_id" = $2,
+  "follow_up" = $3,
+  "status_read" = $4,
+  "updated_at" = now()
+WHERE "id" = $5
+RETURNING *;
+
+-- DELETE ROUTE QUERIE (remove a manager check-in by ID)
+DELETE FROM "manager_check_ins" WHERE "id" = $1 RETURNING *;
 
 -------------------------------------------------------
 --------------------------------------------------
