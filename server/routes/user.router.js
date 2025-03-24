@@ -63,5 +63,50 @@ router.post('/logout', (req, res, next) => {
   });
 });
 
+router.put('/update', async (req, res) => {
+  const { first_name, last_name, pronouns, job_title, email, password } = req.body;
+  const userId = req.user.id;
+
+  if (!req.isAuthenticated()) {
+    return res.status(401).send({ error: 'User not authenticated.' });
+  }
+
+  console.log('User ID:', userId);
+  console.log('Updating data:', { first_name, last_name, pronouns, job_title, email });
+
+  try {
+    let queryString = `
+      UPDATE "user"
+      SET "first_name" = $1,
+          "last_name" = $2,
+          "pronouns" = $3,
+          "job_title" = $4,
+          "email" = $5,
+          "updated_at" = NOW()
+    `;
+    let values = [first_name, last_name, pronouns, job_title, email];
+
+    if (password) {
+      const hashedPassword = encryptLib.encryptPassword(password);
+      queryString += `, "password" = $6 `;
+      values.push(hashedPassword);
+    }
+
+    queryString += ` WHERE "id" = $${values.length + 1};`;
+    values.push(userId);
+
+    const result = await pool.query(queryString, values);
+
+    if (result.rowCount > 0) {
+      res.sendStatus(200);
+    } else {
+      console.log('No rows updated for user ID:', userId);
+      res.status(404).send({ error: 'User not found or no changes made.' });
+    }
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).send({ error: 'Internal server error.' });
+  }
+});
 
 module.exports = router;
