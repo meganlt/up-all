@@ -100,12 +100,16 @@ ALTER TABLE "dashboard_week"
 
 -- GET ROUTE QUERIE (fetch all weekly content)
 SELECT * FROM "dashboard_week" ORDER BY created_at DESC;
+
 -- GET ROUTE QUERIE (fetch a single dashboard week by ID)
 SELECT * FROM "dashboard_week" WHERE id = $1;
+
 -- POST ROUTE QUERIE (insert a new submission)
 INSERT INTO "dashboard_week" (title, theme, content, focus) VALUES ($1, $2, $3, $4) RETURNING *;
+
 -- PUT ROUTE QUERIE (update a specific a specific dasboard week)
 UPDATE "dashboard_week" SET title = $1, theme = $2, content = $3, focus = $4, updated_at = now() WHERE id = $5 RETURNING *;
+
 -- DELETE ROUTE QUERIE (remove an existing dashboard week)
 DELETE FROM "dashboard_week" WHERE id = $1 RETURNING *;
 
@@ -117,6 +121,7 @@ FROM "company_assignment"
 JOIN "dashboard_week" 
 ON "company_assignment".dashboard_week_id = "dashboard_week".id
 ORDER BY "company_assignment".created_at DESC;
+
 -- GET ROUTE QUERIE (fetch a single company's assignment - filtered by company name)
 SELECT "company_assignment".*, "dashboard_week".title 
 FROM "company_assignment"
@@ -124,12 +129,57 @@ JOIN "dashboard_week"
 ON "company_assignment".dashboard_week_id = "dashboard_week".id
 WHERE "company_assignment".company_name = $1
 ORDER BY "company_assignment".active_date_start;
+
 -- POST ROUTE QUERIE (insert a new company assignment)
 INSERT INTO "company_assignment" (company_name, dashboard_week_id, active_date_start, active_date_end) VALUES ($1, $2, $3, $4) RETURNING *;
+
 -- PUT ROUTE QUERIE (update a specific company assignment)
 UPDATE "company_assignment" SET company_name = $1, dashboard_week_id = $2, active_date_start = $3, active_date_end = $4, updated_at = now() WHERE id = $5 RETURNING *;
+
 -- DELETE ROUTE QUERIE (remove an assignment)
 DELETE FROM "company_assignment" WHERE id = $1 RETURNING *;
+
+-- *** QUERIES FOR CHECK_INS TABLE ***
+
+-- GET ROUTE QUERIE (fetch all check-ins)
+SELECT * FROM "check_ins" ORDER BY "created_at" DESC;
+
+-- GET ROUTE QUERIE (fetch a single check-in by ID)
+SELECT * FROM "check_ins" WHERE "id" = $1;
+
+-- POST ROUTE QUERIE (insert a new check-in (create a new entry))
+INSERT INTO "check_ins" (
+  "associate_id", "manager_id", "week_of", "job_satisfaction",
+  "workload_balance", "motivation", "manager_support", "growth_opportunity",
+  "focus_for_week", "progress_from_last_week", "blockers",
+  "feedback_for_manager", "workload_feelings", "skill_development", "tasks"
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *;
+
+-- PUT ROUTE QUERIE (update a specific an existing check-in by ID)
+UPDATE "check_ins" 
+SET
+  "associate_id" = $1,
+  "manager_id" = $2,
+  "week_of" = $3,
+  "job_satisfaction" = $4,
+  "workload_balance" = $5,
+  "motivation" = $6,
+  "manager_support" = $7,
+  "growth_opportunity" = $8,
+  "focus_for_week" = $9,
+  "progress_from_last_week" = $10,
+  "blockers" = $11,
+  "feedback_for_manager" = $12,
+  "workload_feelings" = $13,
+  "skill_development" = $14,
+  "tasks" = $15,
+  "updated_at" = now()
+WHERE "id" = $16
+RETURNING *;
+
+-- DELETE ROUTE QUERIE (remove a check-in by ID)
+DELETE FROM "check_ins" WHERE "id" = $1 RETURNING *;
 
 -------------------------------------------------------
 --------------------------------------------------
