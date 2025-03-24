@@ -76,6 +76,16 @@ CREATE TABLE "check_ins" (
   "updated_at" TIMESTAMPTZ
 );
 
+CREATE TABLE "manager_check_ins" (
+  "id" SERIAL PRIMARY KEY,
+  "manager_id" INT REFERENCES "user"(id) ON DELETE CASCADE,
+  "dashboard_week_id" INT REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
+  "follow_up" BOOLEAN DEFAULT FALSE,
+  "status_read" BOOLEAN DEFAULT FALSE,
+  "created_at" TIMESTAMPTZ DEFAULT now(),
+  "updated_at" TIMESTAMPTZ DEFAULT now()
+);
+
 -- Table edits:
 ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
 ALTER TABLE "check_ins" ADD COLUMN "tasks" TEXT;
