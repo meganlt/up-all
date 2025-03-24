@@ -15,6 +15,9 @@ function Pending() {
                 <li>
                 <NavLink to="/my-account">{user.username}'s account</NavLink>
                 </li>
+                <li>
+                    <button onClick={logOut}>Log Out</button>
+                </li>
                 
             </>
             )}
