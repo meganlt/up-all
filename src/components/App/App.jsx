@@ -113,6 +113,16 @@ function App() {
             )
           }
           />
+          <Route
+          exact path="/pending-role"
+          element={
+            user.id ? (
+              <PendingPage/>  // Redirect authenticated user.
+            ):(
+              <LoginPage /> // Render LoginPage for unauthenticated user.
+            )
+          }
+          />
             <Route 
             exact path="/admin-manage-weekly-content"
             element={
