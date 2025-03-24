@@ -78,6 +78,7 @@ CREATE TABLE "check_ins" (
 
 -- Table edits:
 ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
+ALTER TABLE "check_ins" ADD COLUMN "tasks" TEXT;
 
 -- *** QUERIES FOR DASHBOARD_WEEK TABLE ***
 
