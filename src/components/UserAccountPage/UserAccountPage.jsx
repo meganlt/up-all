@@ -8,7 +8,8 @@ function UserAccountPage() {
   const [pronouns, setPronouns] = useState('');
   const [job_title, setJobTitle] = useState('');
   const [email, setEmail] = useState('');
-  
+  const [password, setPassword] = useState(''); 
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -41,12 +42,17 @@ function UserAccountPage() {
       email,
     };
 
- 
+
+    if (password) {
+      updatedData.password = password;
+    }
+
     console.log('Updated data:', updatedData);
 
     try {
-      const response = await axios.put('/api/user/update', updatedData, { withCredentials: true });
+      await axios.put('/api/user/update', updatedData, { withCredentials: true });
       alert('Account updated successfully!');
+      setPassword(''); 
     } catch (error) {
       console.error('Error updating account:', error);
       alert('Failed to update account. Please try again later.');
@@ -112,6 +118,16 @@ function UserAccountPage() {
           placeholder="Email Address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <label htmlFor="password">New Password (optional)</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter new password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button type="submit">Update Account Information</button>
