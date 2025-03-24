@@ -1,34 +1,40 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import useStore from '../../zustand/store';
 
 function UserAccountPage() {
-  const [user, setUser] = useState(null);
-  const [first_name, setFirstName] = useState('');
-  const [last_name, setLastName] = useState('');
-  const [pronouns, setPronouns] = useState('');
-  const [job_title, setJobTitle] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); 
+  const user = useStore((state) => state.user);
+  const fetchUser = useStore((state) => state.fetchUser);
+  // const [user, setUser] = useState(null);
+  const [first_name, setFirstName] = useState(user.first_name);
+  const [last_name, setLastName] = useState(user.last_name);
+  const [pronouns, setPronouns] = useState(user.pronouns);
+  const [job_title, setJobTitle] = useState(user.job_title);
+  const [email, setEmail] = useState(user.email);
+  const [password, setPassword] = useState('');
+
+  // console.log(user);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('/api/user');
-        if (response.data) {
-          setUser(response.data);
-          setFirstName(response.data.first_name || '');
-          setLastName(response.data.last_name || '');
-          setPronouns(response.data.pronouns || '');
-          setJobTitle(response.data.job_title || '');
-          setEmail(response.data.email || '');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        alert('Failed to load user data.');
-      }
-    };
+    // const fetchUserData = async () => {
+    //   try {
+    //     const response = await axios.get('/api/user');
+    //     if (response.data) {
+    //       setUser(response.data);
+    //       setFirstName(response.data.first_name || '');
+    //       setLastName(response.data.last_name || '');
+    //       setPronouns(response.data.pronouns || '');
+    //       setJobTitle(response.data.job_title || '');
+    //       setEmail(response.data.email || '');
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching user data:', error);
+    //     alert('Failed to load user data.');
+    //   }
+    // };
     
-    fetchUserData();
+    // fetchUserData();
+    fetchUser();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -53,15 +59,14 @@ function UserAccountPage() {
       await axios.put('/api/user/update', updatedData, { withCredentials: true });
       alert('Account updated successfully!');
       setPassword(''); 
+      fetchUser();
     } catch (error) {
       console.error('Error updating account:', error);
       alert('Failed to update account. Please try again later.');
     }
   };
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
+ 
 
   return (
     <>
@@ -75,7 +80,7 @@ function UserAccountPage() {
           type="text"
           id="firstName"
           name="first_name"
-          placeholder="First Name"
+          placeholder={user.first_name}
           value={first_name}
           onChange={(e) => setFirstName(e.target.value)}
         />
@@ -85,7 +90,7 @@ function UserAccountPage() {
           type="text"
           id="lastName"
           name="last_name"
-          placeholder="Last Name"
+          placeholder={user.last_name}
           value={last_name}
           onChange={(e) => setLastName(e.target.value)}
         />
@@ -95,7 +100,7 @@ function UserAccountPage() {
           type="text"
           id="pronouns"
           name="pronouns"
-          placeholder="Pronouns"
+          placeholder={user.pronouns}
           value={pronouns}
           onChange={(e) => setPronouns(e.target.value)}
         />
@@ -105,7 +110,7 @@ function UserAccountPage() {
           type="text"
           id="jobTitle"
           name="job_title"
-          placeholder="Job Title"
+          placeholder={user.job_title}
           value={job_title}
           onChange={(e) => setJobTitle(e.target.value)}
         />
@@ -115,7 +120,7 @@ function UserAccountPage() {
           type="text"
           id="email"
           name="email"
-          placeholder="Email Address"
+          placeholder={user.email}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
