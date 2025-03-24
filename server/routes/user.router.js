@@ -62,6 +62,36 @@ router.post('/logout', (req, res, next) => {
     res.sendStatus(200);
   });
 });
+router.put('/update', (req, res) => {
+  const { first_name, last_name, pronouns, job_title, email } = req.body;
 
+
+  if (!req.isAuthenticated()) {
+    return res.sendStatus(401); 
+  }
+
+  const userId = req.user.id; 
+
+  const queryString = `
+    UPDATE "user"
+    SET "first_name" = $1,
+        "last_name" = $2,
+        "pronouns" = $3,
+        "job_title" = $4,
+        "email" = $5,
+        "updated_at" = NOW()
+    WHERE "id" = $6;
+  `;
+  const values = [first_name, last_name, pronouns, job_title, email, userId];
+
+  pool.query(queryString, values)
+    .then(() => {
+      res.sendStatus(200); 
+    })
+    .catch((err) => {
+      console.error('Error updating user info:', err);
+      res.sendStatus(400); 
+    });
+});
 
 module.exports = router;
