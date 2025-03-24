@@ -46,6 +46,16 @@ CREATE TABLE dashboard_week (
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE "company_assignment" (
+  "id" SERIAL PRIMARY KEY,
+  "company_name" VARCHAR(255) NOT NULL,
+  "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
+  "active_date_start" DATE NOT NULL,
+  "active_date_end" DATE NOT NULL,
+  "created_at" TIMESTAMPTZ DEFAULT now(),
+  "updated_at" TIMESTAMPTZ DEFAULT now()
+);
+
 CREATE TABLE "check_ins" (
   "id" SERIAL PRIMARY KEY,
   "associate_id" INT REFERENCES "user",
