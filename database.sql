@@ -89,6 +89,7 @@ CREATE TABLE "manager_check_ins" (
 ---------- *** TABLE EDITS *** ----------
 ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
 ALTER TABLE "check_ins" ADD COLUMN "tasks" TEXT;
+ALTER TABLE "check_ins" ADD COLUMN "is_active" BOOLEAN DEFAULT TRUE; --- Adding is_active column to check_ins table. We need a way to track if a form is currently active or not.
 
 ---------- *** QUERIES FOR DASHBOARD_WEEK TABLE *** ----------
 
