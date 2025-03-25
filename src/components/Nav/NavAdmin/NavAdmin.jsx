@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
 
-function Admin() {
+function NavAdmin() {
     const user = useStore((store) => store.user);
     const logOut = useStore((state) => state.logOut);
     
@@ -17,6 +17,9 @@ function Admin() {
                 <NavLink to="/admin-manage-weekly-content">Manage Weekly content</NavLink>
                 </li>
                 <li>
+                <NavLink to="/admin-company-assignments">Company Assignments</NavLink>
+                </li>
+                <li>
                 <NavLink to="/my-account">{user.username}'s account</NavLink>
                 </li>
                 <li>
@@ -28,4 +31,4 @@ function Admin() {
         </nav>
     );
 }
-export default Admin;   
+export default NavAdmin;   

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import Admin from './Admin/Admin';
+import Admin from './NavAdmin/NavAdmin';
 import Manager from './NavManager/NavManager';
 import Associate from './NavAssociate/NavAssociate';
 import NavUserAccount from './NavUserAccount/NavUserAccount';
