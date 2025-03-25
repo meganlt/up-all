@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import useStore from "../../../../zustand/store";
+import useStore from "../../../zustand/store";
 
-function Pending() {
+function NavPending() {
     const user = useStore((store) => store.user);
+    const logOut = useStore((state) => state.logOut);
     
     return (
         <nav>
@@ -15,7 +16,9 @@ function Pending() {
                 <li>
                 <NavLink to="/my-account">{user.username}'s account</NavLink>
                 </li>
-                
+                <li>
+                    <button onClick={logOut}>Log Out</button> 
+                </li>
             </>
             )}
         </ul>
@@ -23,4 +26,4 @@ function Pending() {
     );
 }
 
-export default Pending;
+export default NavPending;

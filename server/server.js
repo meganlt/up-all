@@ -15,7 +15,8 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const adminRouter = require('./routes/admin.router'); // dummy router
 const weekRouter = require('./routes/week.router');
-const assignmentsRouter = require('.routes/assignments.router');
+const assignmentsRouter = require('./routes/assignments.router');
+
 // Apply middleware:
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

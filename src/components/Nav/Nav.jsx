@@ -1,10 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import useStore from '../../zustand/store';
-import Admin from './Admin/Admin';
+import Admin from './NavAdmin/NavAdmin';
 import Manager from './NavManager/NavManager';
 import Associate from './NavAssociate/NavAssociate';
-import UserAccount from './NavUserAccount/NavUserAccount';
-
+import NavUserAccount from './NavUserAccount/NavUserAccount';
+import NavPending from './NavPending/NavPending';
 
 function Nav() {
   const user = useStore((store) => store.user);
@@ -33,6 +33,8 @@ function Nav() {
           <Associate/>
         ) : user.id && user.role === "admin" ? (
           <Admin/>
+        ) : user.id && user.role === "pending" ? (
+          <NavPending />
         ) : user.id && (
           <li>in limbo links</li>
         )
