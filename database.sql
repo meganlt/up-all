@@ -152,11 +152,12 @@ DELETE FROM "company_assignment" WHERE id = $1 RETURNING *;
 
 ---------- *** QUERIES FOR CHECK_INS TABLE *** ----------
 
--- GET ROUTE QUERIE (fetch all check-ins)
+-- GET ROUTE QUERIE (Retrieves all rows from the check_ins table, including old and new ones.)
 SELECT * FROM "check_ins" ORDER BY "created_at" DESC;
 
--- GET ROUTE QUERIE (fetch a single check-in by ID)
+-- GET ROUTE QUERIE (Retrieves a specific check-in entry by its unique ID. Used when you need to view or edit a particular check-in.)
 SELECT * FROM "check_ins" WHERE "id" = $1;
+-- GET ROUTE QUERIE (Retrieves the current active check-in form between an associate and manager. Ensures only one active check-in is present per associate-manager pair.)
 SELECT * FROM "check_ins" WHERE "associate_id" = $1 AND "manager_id" = $2 AND "is_active" = TRUE;
 
 
@@ -197,12 +198,13 @@ SET
 WHERE "id" = $16
 RETURNING *;
 
--- PUT ROUTE QUERIE (automatically deactivate old forms)
+-- PUT ROUTE QUERIE (Marks old forms as inactive whenever a new form is created for the same pair. Makes sure only one active form exists at a time for each pair.)
 UPDATE "check_ins" SET "is_active" = FALSE WHERE "associate_id" = $1 AND "manager_id" = $2;
 
--- PUT ROUTE QUERIE (Automatically ending forms after a week)
+-- PUT ROUTE QUERIE (Marks any form older than 7 days as inactive. Automatically closes forms that are outdated.)
 UPDATE "check_ins" SET "is_active" = FALSE WHERE "week_of" <= NOW() - INTERVAL '7 days';
--- Does the ^ above but runs daily:
+
+-- PUT ROUTE QUERIE (Only deactivates forms that are still marked as active and are older than 7 days. Ensures all ongoing forms older than 1 week are closed.)
 UPDATE "check_ins" SET "is_active" = FALSE WHERE "is_active" = TRUE AND "week_of" <= NOW() - INTERVAL '7 days';
 
 -- DELETE ROUTE QUERIE (remove a check-in by ID)
