@@ -163,9 +163,15 @@ INSERT INTO "check_ins" (
   "associate_id", "manager_id", "week_of", "job_satisfaction",
   "workload_balance", "motivation", "manager_support", "growth_opportunity",
   "focus_for_week", "progress_from_last_week", "blockers",
-  "feedback_for_manager", "workload_feelings", "skill_development", "tasks"
+  "feedback_for_manager", "workload_feelings", "skill_development", "tasks", "is_active"
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *;
+VALUES (
+  $1, $2, NOW(), $3,
+  $4, $5, $6, $7,
+  $8, $9, $10,
+  $11, $12, $13, $14, TRUE
+)
+RETURNING *;
 
 -- PUT ROUTE QUERIE (update a specific an existing check-in by ID)
 UPDATE "check_ins" 
@@ -188,6 +194,12 @@ SET
   "updated_at" = now()
 WHERE "id" = $16
 RETURNING *;
+
+-- PUT ROUTE QUERIE (automatically deactivate old forms)
+UPDATE "check_ins" SET "is_active" = FALSE WHERE "associate_id" = $1 AND "manager_id" = $2;
+
+-- PUT ROUTE QUERIE (Automatically ending forms after a week)
+UPDATE "check_ins" SET "is_active" = FALSE WHERE "week_of" <= NOW() - INTERVAL '7 days';
 
 -- DELETE ROUTE QUERIE (remove a check-in by ID)
 DELETE FROM "check_ins" WHERE "id" = $1 RETURNING *;
