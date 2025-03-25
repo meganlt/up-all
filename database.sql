@@ -157,6 +157,8 @@ SELECT * FROM "check_ins" ORDER BY "created_at" DESC;
 
 -- GET ROUTE QUERIE (fetch a single check-in by ID)
 SELECT * FROM "check_ins" WHERE "id" = $1;
+SELECT * FROM "check_ins" WHERE "associate_id" = $1 AND "manager_id" = $2 AND "is_active" = TRUE;
+
 
 -- POST ROUTE QUERIE (insert a new check-in (create a new entry))
 INSERT INTO "check_ins" (
@@ -200,6 +202,8 @@ UPDATE "check_ins" SET "is_active" = FALSE WHERE "associate_id" = $1 AND "manage
 
 -- PUT ROUTE QUERIE (Automatically ending forms after a week)
 UPDATE "check_ins" SET "is_active" = FALSE WHERE "week_of" <= NOW() - INTERVAL '7 days';
+-- Does the ^ above but runs daily:
+UPDATE "check_ins" SET "is_active" = FALSE WHERE "is_active" = TRUE AND "week_of" <= NOW() - INTERVAL '7 days';
 
 -- DELETE ROUTE QUERIE (remove a check-in by ID)
 DELETE FROM "check_ins" WHERE "id" = $1 RETURNING *;
