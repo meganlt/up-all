@@ -10,7 +10,7 @@ function Manager() {
                 <NavLink to="/manager-dashboard">My Dashboard</NavLink>
             </li>
             <li>
-                <NavLink to="/my-account">Manager {user.first_name}'s account</NavLink>
+                <NavLink to="/my-account">{user.username}'s account</NavLink>
             </li>
             <li>
                 <button onClick={logOut}>Log Out</button>

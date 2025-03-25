@@ -14,6 +14,7 @@ import PendingPage from '../PendingPage/PendingPage';
 import UserAccountPage from '../UserAccountPage/UserAccountPage';
 // Admin Includes
 import AdminManageUsers from '../AdminManageUsers/AdminManagerUsers';
+import WeeklyContent from '../WeeklyContent/WeeklyContent';
 // Manager Includes
 import ManagerDashboard from '../ManagerDashboard/ManagerDashboard';
 // Associate Includes
@@ -107,6 +108,38 @@ function App() {
           element={
             user.id ? (
               <AssociateDashboard/>  // Redirect authenticated user.
+            ):(
+              <LoginPage /> // Render LoginPage for unauthenticated user.
+            )
+          }
+          />
+          <Route
+          exact path="/pending-role"
+          element={
+            user.id ? (
+              <PendingPage/>  // Redirect authenticated user.
+            ):(
+              <LoginPage /> // Render LoginPage for unauthenticated user.
+            )
+          }
+          />
+            <Route 
+            exact path="/admin-manage-weekly-content"
+            element={
+              user.id && user.role == "admin" ? (
+                <WeeklyContent/> // Redirect authenticated user.
+              ) : (
+                <LoginPage /> // Render LoginPage for unauthenticated user.
+              )
+            }
+          />
+          
+
+<Route
+          exact path="/my-account"
+          element={
+            user.id ? (
+              <UserAccountPage/>  // Redirect authenticated user.
             ):(
               <LoginPage /> // Render LoginPage for unauthenticated user.
             )

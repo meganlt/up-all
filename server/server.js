@@ -16,6 +16,7 @@ const userRouter = require('./routes/user.router');
 const adminRouter = require('./routes/admin.router'); // dummy router
 const weekRouter = require('./routes/week.router');
 const assignmentsRouter = require('.routes/assignments.router');
+
 // Apply middleware:
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
