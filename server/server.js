@@ -14,7 +14,8 @@ const passport = require('./strategies/user.strategy');
 // Require router files:
 const userRouter = require('./routes/user.router');
 const adminRouter = require('./routes/admin.router'); // dummy router
-const weekRouter = require('./routes/week.router')
+const weekRouter = require('./routes/week.router');
+const assignmentsRouter = require('.routes/assignments.router');
 // Apply middleware:
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -27,6 +28,7 @@ app.use(passport.session());
 app.use('/api/user', userRouter);
 app.use('/api/week', weekRouter);
 app.use('/api/admin', adminRouter); 
+app.use('/api/assignments', assignmentsRouter);
 // Start the server:
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
