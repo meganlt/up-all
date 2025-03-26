@@ -39,7 +39,6 @@ function EditWeeklyContent({
 
   return (
     <div className="edit-weekly-content">
-      <h1>Edit Weekly Content</h1>
       
       <form onSubmit={handleSubmit}>
         <label>Internal Title:</label>
