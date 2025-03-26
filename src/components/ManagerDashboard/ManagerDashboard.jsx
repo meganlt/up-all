@@ -45,6 +45,11 @@ function ManagerDashboard() {
           </Box>
         </Toolbar>
 
+        {/* Welcome */}
+        <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
+            <Typography variant="h5" gutterBottom>Welcome, {user?.first_name || 'Manager'}!</Typography>
+          </Paper>
+
         {/* Tabs */}
         <Tabs
           value={tabIndex}
@@ -61,11 +66,6 @@ function ManagerDashboard() {
       {/* Tab: Manager Weekly */}
       {tabIndex === 0 && (
         <>
-          {/* Welcome */}
-          <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
-            <Typography variant="h5" gutterBottom>Welcome, {user?.first_name || 'Manager'}!</Typography>
-          </Paper>
-
           {/* Last Week Follow-up */}
           <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
             <Typography variant="h6" gutterBottom>Last Week's Follow-up</Typography>
@@ -73,28 +73,17 @@ function ManagerDashboard() {
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <Typography variant="body1">{lastWeekResponse}</Typography>
             <FormControl component="fieldset">
-              <FormLabel component="legend">Follow-up Options</FormLabel>
+              <FormLabel component="legend"></FormLabel>
               <RadioGroup
                 aria-label="follow-up"
                 name="follow-up"
                 value={followUpOption}
                 onChange={(e) => setFollowUpOption(e.target.value)}
               >
-                <FormControlLabel value="option1" control={<Radio />} label="Option 1" />
-                <FormControlLabel value="option2" control={<Radio />} label="Option 2" />
+                <FormControlLabel value="option1" control={<Radio />} label="I did, let's do it again!" />
+                <FormControlLabel value="option2" control={<Radio />} label="I didn't get the opputunity, but I will this week!" />
               </RadioGroup>
             </FormControl>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={readConfirmed}
-                  onChange={(e) => setReadConfirmed(e.target.checked)}
-                  name="readConfirmed"
-                  color="primary"
-                />
-              }
-              label="I have read and understood the follow-up"
-            />
           </Paper>
         </>
       )}
