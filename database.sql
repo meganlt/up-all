@@ -50,9 +50,13 @@ CREATE TABLE dashboard_week (
 CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "id" SERIAL PRIMARY KEY,
   "company_name" VARCHAR(255) NOT NULL,
+  "admin_id" INT REFERENCES "user"(id),             -- Reference to Ken (the admin) -- updated on 3/26 by JR
+  "manager_id" INT REFERENCES "user"(id),           -- Reference to the manager receiving the assignment -- updated on 3/26 by JR
+  "team_member_id" INT REFERENCES "user"(id),       -- Reference to the associate receiving the assignment -- updated on 3/26 by JR
   "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
+  "quarter_title" VARCHAR(255) NOT NULL, -- updated on 3/26 by JR
   "active_date_start" DATE NOT NULL,
-  "active_date_end" DATE NOT NULL,
+  "active_date_end" DATE GENERATED ALWAYS AS ("active_date_start" + INTERVAL '12 weeks') STORED, -- updated on 3/26 by JR
   "created_at" TIMESTAMPTZ DEFAULT now(),
   "updated_at" TIMESTAMPTZ DEFAULT now()
 );
@@ -134,31 +138,47 @@ UPDATE "dashboard_week" SET "quarter_title" = $1, "week" = $2, "theme" = $3, "co
 -- DELETE ROUTE QUERIE (remove an existing dashboard week)
 DELETE FROM "dashboard_week" WHERE id = $1 RETURNING *;
 
----------- *** QUERIES FOR COMPANY_ASSIGNMENT TABLE *** ----------
+---------- *** QUERIES FOR PAIR_ASSIGNMENT TABLE *** ----------
 
--- GET ROUTE QUERIE (fetch all company assignments - for all companies)
-SELECT "company_assignment".*, "dashboard_week".title 
-FROM "company_assignment"
-JOIN "dashboard_week" 
-ON "company_assignment".dashboard_week_id = "dashboard_week".id
-ORDER BY "company_assignment".created_at DESC;
+-- GET ROUTE QUERIE (Fetch all pair assignments (general overview for Ken to see evrything in the system))
+SELECT * FROM "pair_assignment" ORDER BY "created_at" DESC;
 
--- GET ROUTE QUERIE (fetch a single company's assignment - filtered by company name)
-SELECT "company_assignment".*, "dashboard_week".title 
-FROM "company_assignment"
-JOIN "dashboard_week" 
-ON "company_assignment".dashboard_week_id = "dashboard_week".id
-WHERE "company_assignment".company_name = $1
-ORDER BY "company_assignment".active_date_start;
+-- GET ROUTE QUERIE (Fetch assignments by company - filtering by company to see all managers and associates under it)
+SELECT * FROM "pair_assignment" WHERE "company_name" = $1 ORDER BY "created_at" DESC;
 
--- POST ROUTE QUERIE (insert a new company assignment)
-INSERT INTO "company_assignment" (company_name, dashboard_week_id, active_date_start, active_date_end) VALUES ($1, $2, $3, $4) RETURNING *;
+-- GET ROUTE QUERIE (Fetch assignments for a specific manager and their associates)
+SELECT * FROM "pair_assignment" WHERE "manager_id" = $1 ORDER BY "created_at" DESC;
 
--- PUT ROUTE QUERIE (update a specific company assignment)
-UPDATE "company_assignment" SET company_name = $1, dashboard_week_id = $2, active_date_start = $3, active_date_end = $4, updated_at = now() WHERE id = $5 RETURNING *;
+-- GET ROUTE QUERIE (Fetch assignments for a specific associate)
+SELECT * FROM "pair_assignment" WHERE "team_member_id" = $1 ORDER BY "created_at" DESC;
 
--- DELETE ROUTE QUERIE (remove an assignment)
-DELETE FROM "company_assignment" WHERE id = $1 RETURNING *;
+-- POST ROUTE QUERIE (Insert a new pair assignment row into the table when Ken assigns content)
+INSERT INTO "pair_assignment" (
+  "admin_id", "manager_id", "team_member_id", "dashboard_week_id", 
+  "quarter_title", "company_name", "active_date_start"
+)
+VALUES (
+  $1, $2, $3, $4, $5, $6, $7
+)
+RETURNING *;
+
+-- PUT ROUTE QUERIE (Uupdate an existing pair assignment by ID)
+UPDATE "pair_assignment"
+SET
+  "admin_id" = $1,
+  "manager_id" = $2,
+  "team_member_id" = $3,
+  "dashboard_week_id" = $4,
+  "quarter_title" = $5,
+  "company_name" = $6,
+  "active_date_start" = $7,
+  "updated_at" = now()
+WHERE "id" = $8
+RETURNING *;
+
+-- DELETE ROUTE QUERIE (DEletes a specific assignment)
+DELETE FROM "pair_assignment" WHERE "id" = $1 RETURNING *;
+
 
 ---------- *** QUERIES FOR CHECK_INS TABLE *** ----------
 
