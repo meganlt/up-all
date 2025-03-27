@@ -47,7 +47,7 @@ CREATE TABLE dashboard_week (
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "company_assignment" (
+CREATE TABLE "pair_assignment" (
   "id" SERIAL PRIMARY KEY,
   "company_name" VARCHAR(255) NOT NULL,
   "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
@@ -93,6 +93,7 @@ ALTER TABLE "check_ins" ADD COLUMN "tasks" TEXT;
 ALTER TABLE "check_ins" ADD COLUMN "is_active" BOOLEAN DEFAULT TRUE; --- Adding is_active column to check_ins table. We need a way to track if a form is currently active or not.
 ALTER TABLE "dashboard_week" RENAME COLUMN "title" TO "quarter_title"; -- updated on 3/26 by JR
 ALTER TABLE "dashboard_week" ADD COLUMN "week" INT NOT NULL; -- updated on 3/26 by JR
+ALTER TABLE "company_assignment" RENAME TO "pair_assignment";-- updated on 3/26 by JR
 
 ---------- *** QUERIES FOR DASHBOARD_WEEK TABLE *** ----------
 
