@@ -17,7 +17,7 @@ function NavAdmin() {
                 <NavLink to="/admin-manage-weekly-content">Manage Weekly content</NavLink>
                 </li>
                 <li>
-                <NavLink to="/admin-company-assignments">Company Assignments</NavLink>
+                <NavLink to="/admin-pair-assignments">Pair Assignments</NavLink>
                 </li>
                 <li>
                 <NavLink to="/my-account">{user.username}'s account</NavLink>

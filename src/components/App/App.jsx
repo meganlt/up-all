@@ -135,7 +135,7 @@ function App() {
             }
           />
           <Route 
-            exact path="/admin-company-assignments"
+            exact path="/admin-pair-assignments"
             element={
               user.id && user.role == "admin" ? (
                 <AdminPairAssignments/> // Redirect authenticated user.
