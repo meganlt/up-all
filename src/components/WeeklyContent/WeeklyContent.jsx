@@ -75,9 +75,9 @@ function WeeklyContent() {
       ) : (
         <>
           <h1>Add Weekly Content</h1>
-          <EditWeeklyContent 
+          <EditWeeklyContent
             onSave={handleAddWeek}
-            onCancel={() => {}} 
+            onCancel={() => { }}
           />
         </>
       )}
@@ -86,7 +86,8 @@ function WeeklyContent() {
       <table>
         <thead>
           <tr>
-            <th>Title</th>
+            <th>Quarter Title</th> {/*changed from Title*/}
+            <th>Week</th>
             <th>Theme</th>
             <th>Details</th>
             <th>Focus</th>
@@ -97,7 +98,8 @@ function WeeklyContent() {
         <tbody>
           {week.map((row) => (
             <tr key={row.id}>
-              <td>{row.title}</td>
+              <td>{row.quarter_title}</td>  {/* Changed from title */}
+              <td>{row.week}</td>             {/* New field */}
               <td>{row.theme}</td>
               <td>{row.content}</td>
               <td>{row.focus}</td>
