@@ -47,7 +47,7 @@ CREATE TABLE dashboard_week (
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "pair_assignment" (
+CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "id" SERIAL PRIMARY KEY,
   "company_name" VARCHAR(255) NOT NULL,
   "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
