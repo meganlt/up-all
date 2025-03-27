@@ -38,7 +38,8 @@ CREATE TABLE "user" (
 
 CREATE TABLE dashboard_week (
   "id" PRIMARY KEY DEFAULT,
-  "title" VARCHAR(255) NOT NULL,
+  "quarter_title" VARCHAR(255) NOT NULL, -- updated on 3/26 by JR
+  "week" INT NOT NULL, -- updated on 3/26 by JR
   "theme" VARCHAR(255) NOT NULL,
   "content" TEXT NOT NULL,
   "focus" TEXT NOT NULL,   
@@ -46,7 +47,7 @@ CREATE TABLE dashboard_week (
   "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "company_assignment" (
+CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "id" SERIAL PRIMARY KEY,
   "company_name" VARCHAR(255) NOT NULL,
   "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
@@ -90,6 +91,9 @@ CREATE TABLE "manager_check_ins" (
 ALTER TABLE "user" ADD COLUMN manager_assigned INT REFERENCES "user"(id);
 ALTER TABLE "check_ins" ADD COLUMN "tasks" TEXT;
 ALTER TABLE "check_ins" ADD COLUMN "is_active" BOOLEAN DEFAULT TRUE; --- Adding is_active column to check_ins table. We need a way to track if a form is currently active or not.
+ALTER TABLE "dashboard_week" RENAME COLUMN "title" TO "quarter_title"; -- updated on 3/26 by JR
+ALTER TABLE "dashboard_week" ADD COLUMN "week" INT NOT NULL; -- updated on 3/26 by JR
+ALTER TABLE "company_assignment" RENAME TO "pair_assignment";-- updated on 3/26 by JR
 
 ---------- *** QUERIES FOR DASHBOARD_WEEK TABLE *** ----------
 
@@ -112,14 +116,20 @@ ALTER TABLE "dashboard_week"
 -- GET ROUTE QUERIE (fetch all weekly content)
 SELECT * FROM "dashboard_week" ORDER BY created_at DESC;
 
+-- GET ROUTE (fetch all weekly content from all quarters)
+SELECT * FROM "dashboard_week" ORDER BY "quarter_title", "week"; -- updated on 3/26 by JR
+
+-- GET ROUTE (fetch weekly content for a specific quarter title)
+SELECT * FROM "dashboard_week" WHERE "quarter_title" = $1 ORDER BY "week"; -- updated on 3/26 by JR
+
 -- GET ROUTE QUERIE (fetch a single dashboard week by ID)
 SELECT * FROM "dashboard_week" WHERE id = $1;
 
 -- POST ROUTE QUERIE (insert a new submission)
-INSERT INTO "dashboard_week" (title, theme, content, focus) VALUES ($1, $2, $3, $4) RETURNING *;
+INSERT INTO "dashboard_week" ("quarter_title", "week", "theme", "content", "focus") VALUES ($1, $2, $3, $4, $5) RETURNING *; -- updated on 3/26 by JR
 
 -- PUT ROUTE QUERIE (update a specific a specific dasboard week)
-UPDATE "dashboard_week" SET title = $1, theme = $2, content = $3, focus = $4, updated_at = now() WHERE id = $5 RETURNING *;
+UPDATE "dashboard_week" SET "quarter_title" = $1, "week" = $2, "theme" = $3, "content" = $4, "focus" = $5, "updated_at" = now() WHERE "id" = $6 RETURNING *; -- updated on 3/26 by JR
 
 -- DELETE ROUTE QUERIE (remove an existing dashboard week)
 DELETE FROM "dashboard_week" WHERE id = $1 RETURNING *;
