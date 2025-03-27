@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 
-function EditWeeklyContent({ 
-  weekData, 
-  onSave, 
+function EditWeeklyContent({
+  weekData,
+  onSave,
   onCancel,
   initialFormData = {
-    title: '',
+    quarter_title: '',
+    week: '',
     theme: '',
     content: '',
     focus: ''
@@ -16,10 +17,11 @@ function EditWeeklyContent({
   useEffect(() => {
     if (weekData) {
       setFormData({
-        title: weekData.title,
-        theme: weekData.theme,
-        content: weekData.content,
-        focus: weekData.focus
+        quarter_title: weekData.quarter_title || '',
+        week: weekData.week || '',
+        theme: weekData.theme || '',
+        content: weekData.content || '',
+        focus: weekData.focus || ''
       });
     }
   }, [weekData]);
@@ -39,13 +41,21 @@ function EditWeeklyContent({
 
   return (
     <div className="edit-weekly-content">
-      
       <form onSubmit={handleSubmit}>
-        <label>Internal Title:</label>
+        <label>Quarter Title:</label>
         <input
           type="text"
-          name="title"
-          value={formData.title}
+          name="quarter_title"
+          value={formData.quarter_title}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Week:</label>
+        <input
+          type="text"
+          name="week"
+          value={formData.week}
           onChange={handleChange}
           required
         />
