@@ -102,3 +102,6 @@ button:hover, button:focus {
   text-decoration-color: #20c997;
   text-decoration-thickness: 2px;
 }
+.container-manager-dashboard {
+  position: relative;
+}
