@@ -33,6 +33,22 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// GET route: Unique Titles for the Pair Assignments Page
+router.get('/quarters', (req, res)=>{
+  const queryText = `
+  SELECT DISTINCT quarter_title FROM "dashboard_week";
+  `;
+
+  pool.query(queryText)
+    .then((result) => {
+      res.status(200).json(result.rows); // Send back all weeks as JSON response
+    })
+    .catch((err) => {
+      console.error("Error fetching week titles:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }); 
+} );
+
 // POST route: Add a new week
 router.post('/add', async (req, res) => {
   const { quarter_title, week, theme, content, focus } = req.body;

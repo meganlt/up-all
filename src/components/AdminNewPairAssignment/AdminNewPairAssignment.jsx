@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
+import axios from "axios";
 
 function AdminNewPairAssignment() {
 
@@ -48,7 +49,11 @@ function AdminNewPairAssignment() {
 
   function fetchQuarters() {
     // TO DO: Axios call to get all weeks 
+    //axios.get("/api/week/quarters")
+
     // and create new array with all the unique quarter titles from this array
+
+    // TEMPORARY DATA for testing:
     setQuarters(['Meaningful Feedback', 'Effective Meetings']);
   }
 
