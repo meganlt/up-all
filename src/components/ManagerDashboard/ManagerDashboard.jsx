@@ -71,7 +71,18 @@ function ManagerDashboard() {
             <Typography variant="h6" sx={{fontWeight: 'bold'}} gutterBottom>Last Week's Follow-up</Typography>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <Typography variant="body1">{lastWeekResponse}</Typography>
+              <ol>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper nisi vel quam aliquet, ac accumsan dui viverra. Nullam augue erat, finibus eu commodo non, rhoncus id nunc. Nulla euismod cursus viverra. Aliquam tempor ornare sapien et hendrerit. Aenean dapibus sapien sed odio maximus, a pulvinar mi vehicula.</li>
+                <br></br>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper nisi vel quam aliquet, ac accumsan dui viverra. Nullam augue erat, finibus eu commodo non, rhoncus id nunc. Nulla euismod cursus viverra. Aliquam tempor ornare sapien et hendrerit. Aenean dapibus sapien sed odio maximus, a pulvinar mi vehicula.</li>
+                <br></br>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper nisi vel quam aliquet, ac accumsan dui viverra. Nullam augue erat, finibus eu commodo non, rhoncus id nunc. Nulla euismod cursus viverra. Aliquam tempor ornare sapien et hendrerit. Aenean dapibus sapien sed odio maximus, a pulvinar mi vehicula.</li>
+              </ol>
+            <FormControlLabel
+              control={<Checkbox checked={readConfirmed} onChange={(e) => setReadConfirmed(e.target.checked)} />}
+              label="I have read the follow-up"
+            />
+              <Typography variant="body1">{lastWeekResponse}</Typography>
             <FormControl component="fieldset">
               <FormLabel component="legend"></FormLabel>
               <RadioGroup
