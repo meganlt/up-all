@@ -28,6 +28,7 @@ function ManagerDashboard() {
   const [lastWeekResponse, setLastWeekResponse] = useState('');
   const [readConfirmed, setReadConfirmed] = useState(false);
   const [followUpOption, setFollowUpOption] = useState('');
+  const [ThisWeek, setThisWeek] = useState('This Week:');
 
   useEffect(() => {
   }, []);
@@ -67,7 +68,7 @@ function ManagerDashboard() {
         <>
           {/* Last Week Follow-up */}
           <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
-            <Typography variant="h6" gutterBottom>Last Week's Follow-up</Typography>
+            <Typography variant="h6" sx={{fontWeight: 'bold'}} gutterBottom>Last Week's Follow-up</Typography>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <Typography variant="body1">{lastWeekResponse}</Typography>
@@ -82,6 +83,14 @@ function ManagerDashboard() {
                 <FormControlLabel value="option1" control={<Radio />} label="I did, let's do it again!" />
                 <FormControlLabel value="option2" control={<Radio />} label="I didn't get the opputunity, but I will this week!" />
               </RadioGroup>
+            
+            <br></br>
+              
+              <Typography variant="h6" sx={{fontWeight: 'bold'}} gutterBottom>This Week:</Typography>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <Typography variant="body1">{lastWeekResponse}</Typography>
+
             </FormControl>
           </Paper>
         </>
