@@ -41,7 +41,6 @@ function ManagerDashboard() {
           <Box>
             <Button color="primary">My Dashboard</Button>
             <Button color="primary">Manager {user?.first_name || 'Name'}</Button>
-            <Button variant="contained" color="primary"></Button>
           </Box>
         </Toolbar>
 
