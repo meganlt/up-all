@@ -52,7 +52,7 @@ CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "company_name" VARCHAR(255) NOT NULL,
   "admin_id" INT REFERENCES "user"(id),             -- Reference to Ken (the admin) -- updated on 3/26 by JR
   "manager_id" INT REFERENCES "user"(id),           -- Reference to the manager receiving the assignment -- updated on 3/26 by JR
-  "team_member_id" INT REFERENCES "user"(id),       -- Reference to the associate receiving the assignment -- updated on 3/26 by JR
+  "team_member_id" INT REFERENCES "user"(id),       -- Reference to the team member receiving the assignment -- updated on 3/26 by JR
   "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
   "quarter_title" VARCHAR(255) NOT NULL, -- updated on 3/26 by JR
   "week_number" INT NOT NULL, -- updated on 3/30 by JR
