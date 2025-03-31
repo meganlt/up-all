@@ -3,10 +3,11 @@ import useStore from '../../zustand/store';
 import axios from "axios";
 
 function AdminNewPairAssignment() {
-
-  const [quarters, setQuarters] = useState([]);
+  const [weeks, setWeeks] = useState([]);
   const assignedUsers = useStore((state) => state.assignedUsers);
   const fetchAssignedUsers = useStore((state) => state.fetchAssignedUsers);
+
+  console.log('weeks:', weeks);
 
   // State for selected options
   const [selectedCompany, setSelectedCompany] = useState('');
@@ -14,17 +15,37 @@ function AdminNewPairAssignment() {
 
   // Derived lists
   const uniqueCompanies = [...new Set(assignedUsers.map(user => user.company))];
+  const quarters = [...new Set(weeks.map( week => week.quarter_title))];
   const [managers, setManagers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [startDate, setStartDate] = useState('');
 
   console.log(assignedUsers);
   console.log(uniqueCompanies);
+  console.log('quarters:', quarters);
 
+
+  // Fetch weeks so we can pull out all unique quarter titles
+  function fetchWeeks() {
+    axios.get("/api/week")
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setWeeks(response.data);
+        } else {
+          console.error("Expected an array but got:", response.data);
+          setWeeks([]);
+        }
+      })
+      .catch((err) => {
+        console.error("ERROR fetching week:", err);
+        alert("ERROR in fetchWeek: " + err.message);
+      });
+  };
+  
   // Fetch data on mount
   useEffect(() => {
     fetchAssignedUsers();
-    fetchQuarters();
+    fetchWeeks();
   }, []);
 
   // Update managers when company changes
@@ -46,16 +67,6 @@ function AdminNewPairAssignment() {
       setTeamMembers([]);
     }
   }, [selectedManager, assignedUsers]);
-
-  function fetchQuarters() {
-    // TO DO: Axios call to get all weeks 
-    //axios.get("/api/week/quarters")
-
-    // and create new array with all the unique quarter titles from this array
-
-    // TEMPORARY DATA for testing:
-    setQuarters(['Meaningful Feedback', 'Effective Meetings']);
-  }
 
   function handleStartChange(e) {
     setStartDate(e.target.value);
