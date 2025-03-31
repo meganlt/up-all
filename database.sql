@@ -55,7 +55,9 @@ CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "team_member_id" INT REFERENCES "user"(id),       -- Reference to the associate receiving the assignment -- updated on 3/26 by JR
   "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
   "quarter_title" VARCHAR(255) NOT NULL, -- updated on 3/26 by JR
+  "week_number" INT NOT NULL, -- updated on 3/30 by JR
   "active_date_start" DATE NOT NULL,
+  "is_completed" BOOLEAN DEFAULT false, -- updated on 3/30 by JR
   "active_date_end" DATE GENERATED ALWAYS AS ("active_date_start" + INTERVAL '12 weeks') STORED, -- updated on 3/26 by JR
   "created_at" TIMESTAMPTZ DEFAULT now(),
   "updated_at" TIMESTAMPTZ DEFAULT now()
