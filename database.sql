@@ -63,6 +63,31 @@ CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "updated_at" TIMESTAMPTZ DEFAULT now()
 );
 
+CREATE TABLE "pair_assignment" (
+  "id" SERIAL PRIMARY KEY,
+
+  -- Who it's for
+  "admin_id" INT REFERENCES "user"(id),             -- Ken (admin) who made the assignment
+  "manager_id" INT REFERENCES "user"(id),           -- Manager receiving assignment (or overseeing associate)
+  "team_member_id" INT REFERENCES "user"(id),       -- Associate receiving assignment (nullable if it's just for the manager)
+
+  -- What company it’s for (used for dropdown filtering)
+  "company_name" VARCHAR(255) NOT NULL,
+
+  -- What content this row is linked to
+  "dashboard_week_id" INT REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
+
+  -- When this week's content starts
+  "active_date_start" DATE NOT NULL,
+
+  -- Whether the user has completed this week
+  "is_completed" BOOLEAN DEFAULT FALSE,
+
+  -- Timestamps
+  "created_at" TIMESTAMPTZ DEFAULT now(),
+  "updated_at" TIMESTAMPTZ DEFAULT now()
+);
+
 CREATE TABLE "check_ins" (
   "id" SERIAL PRIMARY KEY,
   "associate_id" INT REFERENCES "user",
