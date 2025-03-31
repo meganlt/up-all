@@ -95,8 +95,8 @@ function AdminNewPairAssignment() {
      <form onSubmit={addNewPairAssignment}>
         {/* Company Select */}
         <label>Company:</label>
-        <select value={selectedCompany} onChange={(e) => setSelectedCompany(e.target.value)}>
-          <option value="">Select Company</option>
+        <select required value={selectedCompany} onChange={(e) => setSelectedCompany(e.target.value)}>
+          <option value="" disabled hidden >Select Company</option>
           {uniqueCompanies.map((company, index) => (
             <option key={index} value={company}>{company}</option>
           ))}
@@ -104,8 +104,8 @@ function AdminNewPairAssignment() {
 
         {/* Manager Select */}
         <label>Manager:</label>
-        <select value={selectedManager} onChange={(e) => setSelectedManager(e.target.value)}>
-          <option value="">Select Manager</option>
+        <select required value={selectedManager} onChange={(e) => setSelectedManager(e.target.value)}>
+          <option value="" disabled hidden >Select Manager</option>
           {managers.map((manager) => (
             <option key={manager.id} value={manager.id}>{manager.username}</option>
           ))}
@@ -113,8 +113,8 @@ function AdminNewPairAssignment() {
 
         {/* Team Member Select */}
         <label>Team Member:</label>
-        <select value={selectedTeamMember} onChange={(e) => setSelectedTeamMember(e.target.value)}>
-          <option value="">Select Team Member</option>
+        <select required value={selectedTeamMember} onChange={(e) => setSelectedTeamMember(e.target.value)}>
+          <option value="" disabled hidden >Select Team Member</option>
           {teamMembers.map((member) => (
             <option key={member.id} value={member.id}>{member.username}</option>
           ))}
@@ -122,8 +122,8 @@ function AdminNewPairAssignment() {
 
         {/* Quarter Title */}
         <label>Quarter Title:</label>
-        <select value={selectedQuarter} onChange={(e) => setSelectedQuarter(e.target.value)} >
-          <option value="">Select Quarter</option>
+        <select required value={selectedQuarter} onChange={(e) => setSelectedQuarter(e.target.value)} >
+          <option value="" disabled hidden >Select Quarter</option>
           {quarters.map((title, index) => (
             <option key={index} value={title}>{title}</option>
           ))}
@@ -131,7 +131,7 @@ function AdminNewPairAssignment() {
 
         {/* Start Date */}
         <label>Start Date:</label>
-        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        <input required type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
 
         <button type="submit">Assign Week</button>
       </form>
