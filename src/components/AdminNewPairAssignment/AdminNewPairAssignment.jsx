@@ -12,13 +12,15 @@ function AdminNewPairAssignment() {
   // State for selected options
   const [selectedCompany, setSelectedCompany] = useState('');
   const [selectedManager, setSelectedManager] = useState('');
+  const [selectedTeamMember, setSelectedTeamMember] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [selectedQuarter, setSelectedQuarter] = useState('');
 
   // Derived lists
   const uniqueCompanies = [...new Set(assignedUsers.map(user => user.company))];
   const quarters = [...new Set(weeks.map( week => week.quarter_title))];
   const [managers, setManagers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
-  const [startDate, setStartDate] = useState('');
 
   console.log(assignedUsers);
   console.log(uniqueCompanies);
@@ -68,16 +70,23 @@ function AdminNewPairAssignment() {
     }
   }, [selectedManager, assignedUsers]);
 
-  function handleStartChange(e) {
-    setStartDate(e.target.value);
-    // calculate the end date, which is automatically 12 weeks after the start date.
-    // Display end date on the dom for Admin's visiblity 
-  }
-
   function addNewPairAssignment(e) {
     e.preventDefault();
     console.log('Submitting new assignment...');
+    const objectToSend = {
+      manager: selectedManager,
+      team_member: selectedTeamMember,
+      start_date: startDate,
+      quarter_title: selectedQuarter
+    }
+    console.log(objectToSend);
     // TO DO: Axios POST call
+    axios.post('/api/assignments', objectToSend).then( function(response){
+      console.log(response.data);
+    }).catch( function(err){
+      alert('Error sending new assignment to server');
+      console.log(err);
+    })
   }
 
   return (
@@ -104,7 +113,7 @@ function AdminNewPairAssignment() {
 
         {/* Team Member Select */}
         <label>Team Member:</label>
-        <select>
+        <select value={selectedTeamMember} onChange={(e) => setSelectedTeamMember(e.target.value)}>
           <option value="">Select Team Member</option>
           {teamMembers.map((member) => (
             <option key={member.id} value={member.id}>{member.username}</option>
@@ -113,7 +122,8 @@ function AdminNewPairAssignment() {
 
         {/* Quarter Title */}
         <label>Quarter Title:</label>
-        <select>
+        <select value={selectedQuarter} onChange={(e) => setSelectedQuarter(e.target.value)} >
+          <option value="">Select Quarter</option>
           {quarters.map((title, index) => (
             <option key={index} value={title}>{title}</option>
           ))}
@@ -121,7 +131,7 @@ function AdminNewPairAssignment() {
 
         {/* Start Date */}
         <label>Start Date:</label>
-        <input type="date" value={startDate} onChange={handleStartChange} />
+        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
 
         <button type="submit">Assign Week</button>
       </form>
