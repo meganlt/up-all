@@ -98,6 +98,8 @@ ALTER TABLE "check_ins" ADD COLUMN "is_active" BOOLEAN DEFAULT TRUE; --- Adding 
 ALTER TABLE "dashboard_week" RENAME COLUMN "title" TO "quarter_title"; -- updated on 3/26 by JR
 ALTER TABLE "dashboard_week" ADD COLUMN "week" INT NOT NULL; -- updated on 3/26 by JR
 ALTER TABLE "company_assignment" RENAME TO "pair_assignment";-- updated on 3/26 by JR
+ALTER TABLE "pair_assignment" ADD COLUMN "week_number" INT NOT NULL DEFAULT 1, ADD COLUMN "is_completed" BOOLEAN DEFAULT FALSE; -- updated on 3/30 by Jr
+
 
 ---------- *** QUERIES FOR DASHBOARD_WEEK TABLE *** ----------
 
