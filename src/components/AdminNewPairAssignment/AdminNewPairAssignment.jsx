@@ -84,7 +84,7 @@ function AdminNewPairAssignment() {
     }
     console.log(objectToSend);
     // TO DO: Axios POST call
-    axios.post('/api/assignments', objectToSend).then( function(response){
+    axios.post('/api/assignments/assign', objectToSend).then( function(response){
       console.log(response.data);
     }).catch( function(err){
       alert('Error sending new assignment to server');
