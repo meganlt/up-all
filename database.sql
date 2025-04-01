@@ -52,14 +52,88 @@ CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "company_name" VARCHAR(255) NOT NULL,
   "admin_id" INT REFERENCES "user"(id),             -- Reference to Ken (the admin) -- updated on 3/26 by JR
   "manager_id" INT REFERENCES "user"(id),           -- Reference to the manager receiving the assignment -- updated on 3/26 by JR
-  "team_member_id" INT REFERENCES "user"(id),       -- Reference to the associate receiving the assignment -- updated on 3/26 by JR
+  "team_member_id" INT REFERENCES "user"(id),       -- Reference to the team member receiving the assignment -- updated on 3/26 by JR
   "dashboard_week_id" INTEGER REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
   "quarter_title" VARCHAR(255) NOT NULL, -- updated on 3/26 by JR
+  "week_number" INT NOT NULL, -- updated on 3/30 by JR
   "active_date_start" DATE NOT NULL,
+  "is_completed" BOOLEAN DEFAULT false, -- updated on 3/30 by JR
   "active_date_end" DATE GENERATED ALWAYS AS ("active_date_start" + INTERVAL '12 weeks') STORED, -- updated on 3/26 by JR
   "created_at" TIMESTAMPTZ DEFAULT now(),
   "updated_at" TIMESTAMPTZ DEFAULT now()
 );
+--------------------------------------------------*********--------------------------------------------------
+CREATE TABLE "pair_assignment" (
+  "id" SERIAL PRIMARY KEY,
+
+  -- Who it's for
+  "admin_id" INT REFERENCES "user"(id),             -- Ken (admin) who made the assignment
+  "manager_id" INT REFERENCES "user"(id),           -- Manager receiving assignment (or overseeing associate)
+  "team_member_id" INT REFERENCES "user"(id),       -- Associate receiving assignment (nullable if it's just for the manager)
+
+  -- What company it’s for (used for dropdown filtering)
+  "company_name" VARCHAR(255) NOT NULL,
+
+  -- What content this row is linked to
+  "dashboard_week_id" INT REFERENCES "dashboard_week"(id) ON DELETE CASCADE,
+
+  -- When this week's content starts
+  "active_date_start" DATE NOT NULL,
+
+  -- Whether the user has completed this week
+  "is_completed" BOOLEAN DEFAULT FALSE,
+
+  -- Timestamps
+  "created_at" TIMESTAMPTZ DEFAULT now(),
+  "updated_at" TIMESTAMPTZ DEFAULT now()
+);
+
+-- When assigning: Inserts 12 Rows Each for Manager + Team Member
+WITH weeks AS (
+  SELECT * FROM "dashboard_week"
+  WHERE "quarter_title" = $1
+  ORDER BY "week"
+)
+INSERT INTO "pair_assignment" (
+  "admin_id", "manager_id", "team_member_id", "company_name",
+  "dashboard_week_id", "active_date_start"
+)
+SELECT
+  $2,         -- Ken’s user ID
+  $3,         -- Manager ID
+  $4,         -- Team Member ID (can be NULL when assigning to manager only)
+  $5,         -- Company Name
+  weeks.id,   -- dashboard_week_id
+  $6 + (weeks.week - 1) * INTERVAL '1 week'  -- start date offset by week
+FROM weeks;
+
+-- For Managers; See All Assignments (to self + to team): this will return quarters assigned to the manager and quarters assigned to the manager's team members, shows progress across the whole team
+SELECT pa.*, dw.quarter_title, dw.week
+FROM "pair_assignment" pa
+JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+WHERE pa.manager_id = $1
+ORDER BY pa.team_member_id, dw.week;
+
+-- For Team Members: See OMLY their own quarter, simple and clean view - just their own training quarter
+SELECT pa.*, dw.quarter_title, dw.week
+FROM "pair_assignment" pa
+JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+WHERE pa.team_member_id = $1
+ORDER BY dw.week;
+
+-- UPDATE: Mark a week as complete
+UPDATE "pair_assignment"
+SET "is_completed" = TRUE, "updated_at" = now()
+WHERE "id" = $1
+RETURNING *;
+
+-- DELETE: Remove a single assignments row
+DELETE FROM "pair_assignment"
+WHERE "id" = $1
+RETURNING *;
+
+
+--------------------------------------------------*********--------------------------------------------------
 
 CREATE TABLE "check_ins" (
   "id" SERIAL PRIMARY KEY,
@@ -98,6 +172,8 @@ ALTER TABLE "check_ins" ADD COLUMN "is_active" BOOLEAN DEFAULT TRUE; --- Adding 
 ALTER TABLE "dashboard_week" RENAME COLUMN "title" TO "quarter_title"; -- updated on 3/26 by JR
 ALTER TABLE "dashboard_week" ADD COLUMN "week" INT NOT NULL; -- updated on 3/26 by JR
 ALTER TABLE "company_assignment" RENAME TO "pair_assignment";-- updated on 3/26 by JR
+ALTER TABLE "pair_assignment" ADD COLUMN "week_number" INT NOT NULL DEFAULT 1, ADD COLUMN "is_completed" BOOLEAN DEFAULT FALSE; -- updated on 3/30 by Jr
+
 
 ---------- *** QUERIES FOR DASHBOARD_WEEK TABLE *** ----------
 

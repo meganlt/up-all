@@ -136,4 +136,166 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// ========================
+// POST: Assign 12 Weeks
+// ========================
+router.post('/assign', async (req, res) => {
+    const {
+      admin_id, manager_id, team_member_id,
+      company_name, quarter_title, active_date_start
+    } = req.body;
+  
+    const client = await pool.connect();
+  
+    try {
+      await client.query('BEGIN');
+  
+      // Apply to manager
+      await client.query(
+        `
+        WITH weeks AS (
+          SELECT * FROM "dashboard_week"
+          WHERE "quarter_title" = $1
+          ORDER BY "week"
+        )
+        INSERT INTO "pair_assignment" (
+          "admin_id", "manager_id", "team_member_id", "company_name",
+          "dashboard_week_id", "active_date_start"
+        )
+        SELECT
+          $2, $3, NULL, $4, weeks.id,
+          $5 + (weeks.week - 1) * INTERVAL '1 week'
+        FROM weeks;
+        `,
+        [quarter_title, admin_id, manager_id, company_name, active_date_start]
+      );
+  
+      // Apply to team member (if one is selected)
+      if (team_member_id) {
+        await client.query(
+          `
+          WITH weeks AS (
+            SELECT * FROM "dashboard_week"
+            WHERE "quarter_title" = $1
+            ORDER BY "week"
+          )
+          INSERT INTO "pair_assignment" (
+            "admin_id", "manager_id", "team_member_id", "company_name",
+            "dashboard_week_id", "active_date_start"
+          )
+          SELECT
+            $2, $3, $4, $5, weeks.id,
+            $6 + (weeks.week - 1) * INTERVAL '1 week'
+          FROM weeks;
+          `,
+          [quarter_title, admin_id, manager_id, team_member_id, company_name, active_date_start]
+        );
+      }
+  
+      await client.query('COMMIT');
+      res.sendStatus(201);
+    } catch (error) {
+      await client.query('ROLLBACK');
+      console.error('Error assigning quarter:', error.message);
+      res.status(500).send('Server Error');
+    } finally {
+      client.release();
+    }
+  });
+  
+  // ========================
+  // GET: All Assignments
+  // ========================
+  router.get('/', async (req, res) => {
+    try {
+      const result = await pool.query(`
+        SELECT pa.*, dw.quarter_title, dw.week
+        FROM "pair_assignment" pa
+        JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+        ORDER BY pa.created_at DESC;
+      `);
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Error fetching all assignments:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+  // ========================
+  // GET: By Manager ID
+  // ========================
+  router.get('/manager/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query(`
+        SELECT pa.*, dw.quarter_title, dw.week
+        FROM "pair_assignment" pa
+        JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+        WHERE pa.manager_id = $1
+        ORDER BY pa.team_member_id, dw.week;
+      `, [id]);
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Error fetching manager assignments:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+  // ========================
+  // GET: By Team Member ID
+  // ========================
+  router.get('/team/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query(`
+        SELECT pa.*, dw.quarter_title, dw.week
+        FROM "pair_assignment" pa
+        JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+        WHERE pa.team_member_id = $1
+        ORDER BY dw.week;
+      `, [id]);
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Error fetching team member assignments:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+  // ========================
+  // PUT: Mark Week Complete
+  // ========================
+  router.put('/complete/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query(`
+        UPDATE "pair_assignment"
+        SET "is_completed" = TRUE, "updated_at" = now()
+        WHERE "id" = $1
+        RETURNING *;
+      `, [id]);
+      res.status(200).json(result.rows[0]);
+    } catch (error) {
+      console.error('Error marking assignment complete:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+  // ========================
+  // DELETE: Remove Assignment Row
+  // ========================
+  router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query(`
+        DELETE FROM "pair_assignment"
+        WHERE "id" = $1
+        RETURNING *;
+      `, [id]);
+      res.status(200).json(result.rows[0]);
+    } catch (error) {
+      console.error('Error deleting assignment row:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+
 module.exports = router;
