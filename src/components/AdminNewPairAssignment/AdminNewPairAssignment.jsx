@@ -3,6 +3,7 @@ import useStore from '../../zustand/store';
 import axios from "axios";
 
 function AdminNewPairAssignment() {
+  const user = useStore((state) => state.user);
   const [weeks, setWeeks] = useState([]);
   const assignedUsers = useStore((state) => state.assignedUsers);
   const fetchAssignedUsers = useStore((state) => state.fetchAssignedUsers);
@@ -74,9 +75,11 @@ function AdminNewPairAssignment() {
     e.preventDefault();
     console.log('Submitting new assignment...');
     const objectToSend = {
-      manager: selectedManager,
-      team_member: selectedTeamMember,
-      start_date: startDate,
+      admin_id: user.id,
+      company_name: selectedCompany,
+      manager_id: selectedManager,
+      team_member_id: selectedTeamMember,
+      active_date_start: startDate,
       quarter_title: selectedQuarter
     }
     console.log(objectToSend);
