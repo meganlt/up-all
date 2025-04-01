@@ -19,7 +19,7 @@ import WeeklyContent from '../WeeklyContent/WeeklyContent';
 import ManagerDashboard from '../ManagerDashboard/ManagerDashboard';
 // Associate Includes
 import AssociateDashboard from '../AssociateDashboard/AssociateDashboard';
-import AdminCompanyAssignments from '../AdminCompanyAssignments/AdminCompanyAssignments';
+import AdminPairAssignments from '../AdminPairAssignments/AdminPairAssignments';
 
 function App() {
   const user = useStore((state) => state.user);
@@ -135,10 +135,10 @@ function App() {
             }
           />
           <Route 
-            exact path="/admin-company-assignments"
+            exact path="/admin-pair-assignments"
             element={
               user.id && user.role == "admin" ? (
-                <AdminCompanyAssignments/> // Redirect authenticated user.
+                <AdminPairAssignments/> // Redirect authenticated user.
               ) : (
                 <LoginPage /> // Render LoginPage for unauthenticated user.
               )

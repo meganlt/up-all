@@ -1,18 +1,13 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import EditWeeklyContent from "./EditWeeklyContent";
 
 function WeeklyContent() {
   const [week, setWeek] = useState([]);
-  const [title, setTitle] = useState("");
-  const [theme, setTheme] = useState("");
-  const [content, setContent] = useState("");
-  const [focus, setFocus] = useState("");
-  const [editingId, setEditingId] = useState(null); // Track the id of the content being edited
-
+  const [editingWeek, setEditingWeek] = useState(null);
 
   const fetchWeek = () => {
-    axios
-      .get("/api/week") 
+    axios.get("/api/week")
       .then((response) => {
         if (Array.isArray(response.data)) {
           setWeek(response.data);
@@ -27,12 +22,10 @@ function WeeklyContent() {
       });
   };
 
-
   const deleteWeek = async (weekId) => {
     try {
-    const response = await axios.delete(`/api/week/${weekId}`);
-
-      setWeek(week.filter((w) => w.id !== weekId)); 
+      await axios.delete(`/api/week/${weekId}`);
+      setWeek(week.filter((w) => w.id !== weekId));
       alert("Week deleted successfully!");
     } catch (error) {
       console.error("Error deleting week:", error);
@@ -40,43 +33,30 @@ function WeeklyContent() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newWeekContent = { title, theme, content, focus };
-
+  const handleAddWeek = async (newWeekContent) => {
     try {
-      let response;
-      if (editingId) {
-        response = await axios.put(`/api/week/${editingId}`, newWeekContent); 
-        setWeek(week.map((w) => (w.id === editingId ? response.data : w))); 
-        alert("Week updated successfully!");
-      } else {
-        response = await axios.post("/api/week/add", newWeekContent);
-        setWeek([response.data, ...week]); 
-        alert("Week added successfully!");
-      }
-
-      // Reset form fields
-      setTitle("");
-      setTheme("");
-      setContent("");
-      setFocus("");
-      setEditingId(null); // Clear the editing state
+      const response = await axios.post("/api/week/add", newWeekContent);
+      setWeek([response.data, ...week]);
+      alert("Week added successfully!");
+      return true;
     } catch (error) {
-      console.error("Error adding/updating week:", error);
-      alert("Failed to add or update week.");
+      console.error("Error adding week:", error);
+      alert("Failed to add week.");
+      return false;
     }
   };
 
-  const updateWeek = (weekId) => {
-    const weekToEdit = week.find((w) => w.id === weekId);
-    if (weekToEdit) {
-      setEditingId(weekId); 
-      setTitle(weekToEdit.title);
-      setTheme(weekToEdit.theme);
-      setContent(weekToEdit.content);
-      setFocus(weekToEdit.focus);
+  const handleUpdateWeek = async (updatedData) => {
+    try {
+      const response = await axios.put(`/api/week/${editingWeek.id}`, updatedData);
+      setWeek(week.map((w) => (w.id === editingWeek.id ? response.data : w)));
+      setEditingWeek(null);
+      alert("Week updated successfully!");
+      return true;
+    } catch (error) {
+      console.error("Error updating week:", error);
+      alert("Failed to update week.");
+      return false;
     }
   };
 
@@ -86,65 +66,46 @@ function WeeklyContent() {
 
   return (
     <div className="WeeklyContent">
-      <h1>{editingId ? "Edit" : "Add"} Weekly Content</h1>
-
-      {/* Add New or Edit Weekly Content Form */}
-      <form onSubmit={handleSubmit} className="add-week-form">
-        <label>Internal Title:</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
+      {editingWeek ? (
+        <EditWeeklyContent
+          weekData={editingWeek}
+          onSave={handleUpdateWeek}
+          onCancel={() => setEditingWeek(null)}
         />
-
-        <label>Theme:</label>
-        <input
-          type="text"
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-          required
-        />
-
-        <label>Manager Weekly Content:</label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        />
-
-        <label>This Week's Focus Content:</label>
-        <textarea
-          value={focus}
-          onChange={(e) => setFocus(e.target.value)}
-          required
-        />
-
-        <button type="submit">{editingId ? "Update Week" : "Add Week"}</button>
-      </form>
+      ) : (
+        <>
+          <h1>Add Weekly Content</h1>
+          <EditWeeklyContent
+            onSave={handleAddWeek}
+            onCancel={() => { }}
+          />
+        </>
+      )}
 
       {/* Weekly Content Library */}
       <table>
         <thead>
           <tr>
-            <th>Title</th>
+            <th>Quarter Title</th> {/*changed from Title*/}
+            <th>Week</th>
             <th>Theme</th>
             <th>Details</th>
             <th>Focus</th>
             <th>Last Updated</th>
-            <th>Actions</th> {/* Added actions column for edit and delete */}
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {week.map((row) => (
             <tr key={row.id}>
-              <td>{row.title}</td>
+              <td>{row.quarter_title}</td>  {/* Changed from title */}
+              <td>{row.week}</td>             {/* New field */}
               <td>{row.theme}</td>
               <td>{row.content}</td>
               <td>{row.focus}</td>
               <td>{new Date(row.updated_at).toLocaleString()}</td>
               <td>
-                <button onClick={() => updateWeek(row.id)}>Edit</button>
+                <button onClick={() => setEditingWeek(row)}>Edit</button>
                 <button onClick={() => deleteWeek(row.id)}>Delete</button>
               </td>
             </tr>
