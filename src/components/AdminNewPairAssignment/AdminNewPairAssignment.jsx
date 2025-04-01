@@ -74,11 +74,12 @@ function AdminNewPairAssignment() {
   function addNewPairAssignment(e) {
     e.preventDefault();
     console.log('Submitting new assignment...');
+
     const objectToSend = {
       admin_id: user.id,
       company_name: selectedCompany,
-      manager_id: selectedManager,
-      team_member_id: selectedTeamMember,
+      manager_id: Number(selectedManager),
+      team_member_id: Number(selectedTeamMember),
       active_date_start: startDate,
       quarter_title: selectedQuarter
     }
