@@ -62,7 +62,7 @@ CREATE TABLE "pair_assignment" ( -- updated on 3/26 by JR
   "created_at" TIMESTAMPTZ DEFAULT now(),
   "updated_at" TIMESTAMPTZ DEFAULT now()
 );
-
+--------------------------------------------------*********--------------------------------------------------
 CREATE TABLE "pair_assignment" (
   "id" SERIAL PRIMARY KEY,
 
@@ -87,6 +87,53 @@ CREATE TABLE "pair_assignment" (
   "created_at" TIMESTAMPTZ DEFAULT now(),
   "updated_at" TIMESTAMPTZ DEFAULT now()
 );
+
+-- When assigning: Inserts 12 Rows Each for Manager + Team Member
+WITH weeks AS (
+  SELECT * FROM "dashboard_week"
+  WHERE "quarter_title" = $1
+  ORDER BY "week"
+)
+INSERT INTO "pair_assignment" (
+  "admin_id", "manager_id", "team_member_id", "company_name",
+  "dashboard_week_id", "active_date_start"
+)
+SELECT
+  $2,         -- Ken’s user ID
+  $3,         -- Manager ID
+  $4,         -- Team Member ID (can be NULL when assigning to manager only)
+  $5,         -- Company Name
+  weeks.id,   -- dashboard_week_id
+  $6 + (weeks.week - 1) * INTERVAL '1 week'  -- start date offset by week
+FROM weeks;
+
+-- For Managers; See All Assignments (to self + to team): this will return quarters assigned to the manager and quarters assigned to the manager's team members, shows progress across the whole team
+SELECT pa.*, dw.quarter_title, dw.week
+FROM "pair_assignment" pa
+JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+WHERE pa.manager_id = $1
+ORDER BY pa.team_member_id, dw.week;
+
+-- For Team Members: See OMLY their own quarter, simple and clean view - just their own training quarter
+SELECT pa.*, dw.quarter_title, dw.week
+FROM "pair_assignment" pa
+JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+WHERE pa.team_member_id = $1
+ORDER BY dw.week;
+
+-- UPDATE: Mark a week as complete
+UPDATE "pair_assignment"
+SET "is_completed" = TRUE, "updated_at" = now()
+WHERE "id" = $1
+RETURNING *;
+
+-- DELETE: Remove a single assignments row
+DELETE FROM "pair_assignment"
+WHERE "id" = $1
+RETURNING *;
+
+
+--------------------------------------------------*********--------------------------------------------------
 
 CREATE TABLE "check_ins" (
   "id" SERIAL PRIMARY KEY,
