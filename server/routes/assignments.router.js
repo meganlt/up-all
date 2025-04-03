@@ -221,6 +221,33 @@ router.post('/assign', async (req, res) => {
     }
   });
   
+   // ========================
+  // GET: Filter by Company and Manager
+  // ========================
+  router.get('/company/:company/manager/:manager_id', async (req, res) => {
+    const { company, manager_id } = req.params;
+  
+    try {
+      const result = await pool.query(
+        `
+        SELECT pa.*, dw.quarter_title, dw.week, u1.username AS manager_name, u2.username AS team_member_name
+        FROM "pair_assignment" pa
+        JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+        LEFT JOIN "user" u1 ON pa.manager_id = u1.id
+        LEFT JOIN "user" u2 ON pa.team_member_id = u2.id
+        WHERE pa.company_name = $1
+          AND pa.manager_id = $2
+        ORDER BY dw.week;
+        `,
+        [company, manager_id]
+      );
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Error fetching assignments by company and manager:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+
   // ========================
   // GET: By Manager ID
   // ========================
