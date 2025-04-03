@@ -1,6 +1,21 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import EditWeeklyContent from "./EditWeeklyContent";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Typography,
+  Box,
+  IconButton,
+  Container
+} from "@mui/material";
+import { Edit, Delete } from "@mui/icons-material";
 
 function WeeklyContent() {
   const [week, setWeek] = useState([]);
@@ -23,6 +38,8 @@ function WeeklyContent() {
   };
 
   const deleteWeek = async (weekId) => {
+    if (!window.confirm("Are you sure you want to delete this week?")) return;
+    
     try {
       await axios.delete(`/api/week/${weekId}`);
       setWeek(week.filter((w) => w.id !== weekId));
@@ -65,7 +82,7 @@ function WeeklyContent() {
   }, []);
 
   return (
-    <div className="WeeklyContent">
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       {editingWeek ? (
         <EditWeeklyContent
           weekData={editingWeek}
@@ -74,45 +91,70 @@ function WeeklyContent() {
         />
       ) : (
         <>
-          <h1>Add Weekly Content</h1>
-          <EditWeeklyContent
+          <Typography variant="h4" component="h1" gutterBottom>
+            Add Weekly Content
+          </Typography>
+          <EditWeeklyContent 
             onSave={handleAddWeek}
-            onCancel={() => { }}
+            onCancel={() => {}} 
           />
         </>
       )}
 
-      {/* Weekly Content Library */}
-      <table>
-        <thead>
-          <tr>
-            <th>Quarter Title</th> {/*changed from Title*/}
-            <th>Week</th>
-            <th>Theme</th>
-            <th>Details</th>
-            <th>Focus</th>
-            <th>Last Updated</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {week.map((row) => (
-            <tr key={row.id}>
-              <td>{row.quarter_title}</td>  {/* Changed from title */}
-              <td>{row.week}</td>             {/* New field */}
-              <td>{row.theme}</td>
-              <td>{row.content}</td>
-              <td>{row.focus}</td>
-              <td>{new Date(row.updated_at).toLocaleString()}</td>
-              <td>
-                <button onClick={() => setEditingWeek(row)}>Edit</button>
-                <button onClick={() => deleteWeek(row.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 2 }}>
+        Weekly Content Library
+      </Typography>
+      
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="weekly content table">
+          <TableHead>
+            <TableRow sx={{ backgroundColor: 'primary.light' }}>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Quarter Title</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Week</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Theme</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Details</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Focus</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Last Updated</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {week.map((row) => (
+              <TableRow
+                key={row.id}
+                hover
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>{row.quarter_title}</TableCell>
+                <TableCell>{row.week}</TableCell>
+                <TableCell>{row.theme}</TableCell>
+                <TableCell sx={{ maxWidth: 300 }}>{row.content}</TableCell>
+                <TableCell sx={{ maxWidth: 300 }}>{row.focus}</TableCell>
+                <TableCell>
+                  {new Date(row.updated_at).toLocaleString()}
+                </TableCell>
+                <TableCell>
+                  <IconButton 
+                    color="primary" 
+                    onClick={() => setEditingWeek(row)}
+                    aria-label="edit"
+                  >
+                    <Edit />
+                  </IconButton>
+                  <IconButton 
+                    color="error" 
+                    onClick={() => deleteWeek(row.id)}
+                    aria-label="delete"
+                  >
+                    <Delete />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 }
 
