@@ -140,6 +140,8 @@ router.delete('/:id', async (req, res) => {
 // POST: Assign 12 Weeks
 // ========================
 router.post('/assign', async (req, res) => {
+
+  console.log('in /assign POST:', req.body);
     const {
       admin_id, manager_id, team_member_id,
       company_name, quarter_title, active_date_start
@@ -164,7 +166,7 @@ router.post('/assign', async (req, res) => {
         )
         SELECT
           $2, $3, NULL, $4, weeks.id,
-          $5 + (weeks.week - 1) * INTERVAL '1 week'
+          ($5::DATE + (weeks.week - 1) * INTERVAL '1 week')::DATE
         FROM weeks;
         `,
         [quarter_title, admin_id, manager_id, company_name, active_date_start]
@@ -185,7 +187,7 @@ router.post('/assign', async (req, res) => {
           )
           SELECT
             $2, $3, $4, $5, weeks.id,
-            $6 + (weeks.week - 1) * INTERVAL '1 week'
+            ($6::DATE + (weeks.week - 1) * INTERVAL '1 week')::DATE
           FROM weeks;
           `,
           [quarter_title, admin_id, manager_id, team_member_id, company_name, active_date_start]

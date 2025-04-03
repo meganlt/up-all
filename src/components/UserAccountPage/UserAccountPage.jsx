@@ -1,6 +1,28 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useStore from '../../zustand/store';
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Tabs,
+  Tab,
+  AppBar,
+  Toolbar,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  FormControl,
+  Grid2,
+  TextField
+} from '@mui/material';
 
 function UserAccountPage() {
   const user = useStore((state) => state.user);
@@ -13,27 +35,7 @@ function UserAccountPage() {
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
 
-  // console.log(user);
-
   useEffect(() => {
-    // const fetchUserData = async () => {
-    //   try {
-    //     const response = await axios.get('/api/user');
-    //     if (response.data) {
-    //       setUser(response.data);
-    //       setFirstName(response.data.first_name || '');
-    //       setLastName(response.data.last_name || '');
-    //       setPronouns(response.data.pronouns || '');
-    //       setJobTitle(response.data.job_title || '');
-    //       setEmail(response.data.email || '');
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching user data:', error);
-    //     alert('Failed to load user data.');
-    //   }
-    // };
-    
-    // fetchUserData();
     fetchUser();
   }, []);
 
@@ -70,73 +72,97 @@ function UserAccountPage() {
 
   return (
     <>
-      <h1>User Account Page</h1>
-      <h2>Hi, {user.username}!</h2>
-      <h3>Update your account information here.</h3>
+      <Paper elevation={1} sx={{ p: 4, mb: 4 }}>
+        
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="firstName">First Name</label>
-        <input
-          type="text"
-          id="firstName"
-          name="first_name"
-          placeholder={user.first_name}
-          value={first_name}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
+        <h1>Hi, {user.first_name ? user.first_name : user.username}!</h1>
+        <p>Update your account information here.</p>
+        <form onSubmit={handleSubmit}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid2 container spacing={4}>
+              <Grid2 size={6}>
+                <FormLabel htmlFor="firstName">First Name</FormLabel>
+                <TextField
+                  type="text"
+                  fullWidth
+                  id="firstName"
+                  name="first_name"
+                  placeholder={user.first_name}
+                  value={first_name}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  sx={{mb:3}}
+                />
 
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          type="text"
-          id="lastName"
-          name="last_name"
-          placeholder={user.last_name}
-          value={last_name}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+                <FormLabel htmlFor="lastName">Last Name</FormLabel>
+                <TextField
+                  type="text"
+                  fullWidth
+                  id="lastName"
+                  name="last_name"
+                  placeholder={user.last_name}
+                  value={last_name}
+                  onChange={(e) => setLastName(e.target.value)}
+                  sx={{mb:3}}
+                />
 
-        <label htmlFor="pronouns">Pronouns</label>
-        <input
-          type="text"
-          id="pronouns"
-          name="pronouns"
-          placeholder={user.pronouns}
-          value={pronouns}
-          onChange={(e) => setPronouns(e.target.value)}
-        />
+                <FormLabel htmlFor="pronouns">Pronouns</FormLabel>
+                <TextField
+                  type="text"
+                  fullWidth
+                  id="pronouns"
+                  name="pronouns"
+                  placeholder={user.pronouns}
+                  value={pronouns}
+                  onChange={(e) => setPronouns(e.target.value)}
+                  sx={{mb:3}}
+                />
+              </Grid2>
+              <Grid2 size={6}>
+                <FormLabel htmlFor="jobTitle">Job Title</FormLabel>
+                <TextField
+                  type="text"
+                  fullWidth
+                  id="jobTitle"
+                  name="job_title"
+                  placeholder={user.job_title}
+                  value={job_title}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  sx={{mb:3}}
+                />
 
-        <label htmlFor="jobTitle">Job Title</label>
-        <input
-          type="text"
-          id="jobTitle"
-          name="job_title"
-          placeholder={user.job_title}
-          value={job_title}
-          onChange={(e) => setJobTitle(e.target.value)}
-        />
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <TextField
+                  type="text"
+                  fullWidth
+                  id="email"
+                  name="email"
+                  placeholder={user.email}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{mb:3}}
+                />
 
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          placeholder={user.email}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+                <FormLabel htmlFor="password">New Password (optional)</FormLabel>
+                <TextField
+                  type="password"
+                  fullWidth
+                  id="password"
+                  name="password"
+                  placeholder="Enter new password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  sx={{mb:3}}
+                />
+              </Grid2>
+            </Grid2>
+          </Box>
+          
 
-        <label htmlFor="password">New Password (optional)</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Enter new password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
 
-        <button type="submit">Update Account Information</button>
-      </form>
+
+          <Button variant="contained" type="submit">Update Account Information</Button>
+        </form>
+      </Paper>
     </>
   );
 }

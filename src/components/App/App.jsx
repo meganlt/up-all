@@ -37,7 +37,7 @@ function App() {
   return (
     <>
       <header>
-        <h1>Prime Solo Project</h1>
+        <img className="header-logo" src="../../../public/UpAll_Logo.svg"/>
         <Nav />
       </header>
       <main>
