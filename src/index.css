@@ -7,6 +7,13 @@
   box-sizing: border-box;
 }
 
+/* Setting up Color Variables */
+:root {
+  --primary-color: 99, 55, 97;
+  --accent-color: 206, 179, 36;
+  --link-color: 28, 164, 198;
+}
+
 /* Remove Margin/Padding: */
 html, body {
   margin: 0;
@@ -33,6 +40,7 @@ body {
 
 main {
   flex-grow: 1;
+  margin: 20px;
 }
 
 header, footer {
@@ -43,6 +51,11 @@ header, footer {
 }
 
 /* Nav Styles: */
+header {
+  background: white;
+  margin-bottom: 20px;
+}
+
 nav ul {
   display: flex;
   gap: 20px;
@@ -52,14 +65,14 @@ nav ul {
 }
 
 nav a {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba( var(--link-color), 1);
   text-decoration: none;
 }
 
 nav a.active {
-  color: rgba(0, 0, 0, 0.75);
+  color: rgba( var(--link-color), 1);
+  font-weight: bold;
   text-decoration: underline;
-  text-decoration-color: #20c997;
   text-decoration-thickness: 2px;
   transition: 0.7s;
 }
