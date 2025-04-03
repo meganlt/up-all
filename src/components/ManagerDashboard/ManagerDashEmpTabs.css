@@ -6,19 +6,23 @@
 .employee-nav {
   width: 200px;
   background-color: #f4f4f4;
-  border-right: 1px solid #ccc;
+  /* border-right: 1px solid #ccc; */
   /* position: fixed; */
   top: 0;
   left: 0;
   bottom: 0;
   overflow-y: auto;
   z-index: 10;
+  float:left;
 }
 
 .employee-nav ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  flex-direction: column;
+  font-weight: bold;
+  background-color: rgba(181, 177, 177, 0.574);
 }
 
 .employee-nav li {
@@ -29,33 +33,38 @@ padding: 10px 20px;
 }
 
 .employee-nav li:hover {
-  background-color: #e0e0e0;
+  background-color: #5553537f;
   color: #000;
 }
 
 .employee-nav li.active:hover {
-  background-color: darkgrey;
+  background-color: #55535394;
   color: rgb(62, 71, 71);
 }
 
 .employee-nav li.active {
   width: 200px;
-  height: 100vh;
-  background-color: darkgrey;
+  /* height: 100vh; */
   font-weight: bold;
-  position: fixed;
+  /* position: fixed; */
   left: 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   margin: 0;
 }
 
-.main-content {
+.manager-content {
+  margin: 0;
+  padding: 0;
+  background: white;
+}
+
+.main-content.manager-content {
   /* margin-left: 200px; Offset to account for the sidebar */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  margin-left: 80px;
+  border:#000;
+
 }
 
 .tabs {

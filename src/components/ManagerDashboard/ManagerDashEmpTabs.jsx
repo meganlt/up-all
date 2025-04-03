@@ -41,7 +41,7 @@ const ManagerDashEmpTabs = () => {
   const [activeTab, setActiveTab] = useState('Weekly Content');
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       {/* Vertical Navigation for Employees */}
       <nav className="employee-nav">
         <ul>
@@ -58,7 +58,7 @@ const ManagerDashEmpTabs = () => {
       </nav>
 
       {/* Main Content Area */}
-      <div className="main-content">
+      <div className="main-content manager-content">
        
 
         {/* Content Display Area */}
