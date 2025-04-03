@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 /* Box-Sizing Fix: */
   /* https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 *,
@@ -12,6 +12,7 @@
   --primary-color: 99, 55, 97;
   --accent-color: 206, 179, 36;
   --link-color: 28, 164, 198;
+  --body-font: "Quicksand"
 }
 
 /* Remove Margin/Padding: */
@@ -22,7 +23,7 @@ html, body {
 
 /* Typography: */
 body {
-  font-family: sans-serif;
+  font-family: var(--body-font);
   background-color: #f0f0f0;
   color: rgba(0, 0, 0, 0.75);
 }
@@ -54,6 +55,11 @@ header, footer {
 header {
   background: white;
   margin-bottom: 20px;
+
+  .header-logo {
+    height: 50px;
+    margin: 20px;
+  }
 }
 
 nav ul {
