@@ -15,7 +15,6 @@ import UserAccountPage from '../UserAccountPage/UserAccountPage';
 // Admin Includes
 import AdminManageUsers from '../AdminManageUsers/AdminManagerUsers';
 import WeeklyContent from '../WeeklyContent/WeeklyContent';
-import employeeSideBar from '../employeeSideBar/employeeSideBar';
 // Manager Includes
 import ManagerDashboard from '../ManagerDashboard/ManagerDashboard';
 // Associate Includes

@@ -5,13 +5,13 @@ function employeeSideBar() {
   return (
     <Box
       sx={{
-        width: '200px',
-        height: '100vh',
+        width: '100px',
+        height: '90',
         backgroundColor: 'darkgrey',
         display: 'flex',
         flexDirection: 'column',
         position: 'fixed',
-        top: 0,
+        top: 150,
         left: 0,
         boxShadow: 3,
       }}

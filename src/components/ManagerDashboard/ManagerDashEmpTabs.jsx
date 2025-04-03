@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ManagerDashEmpTabs.css';
 import useStore from '../../zustand/store';
-import employeeSideBar from '../employeeSideBar/employeeSideBar';
 import {
   Container,
   Paper,
