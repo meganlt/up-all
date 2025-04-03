@@ -19,19 +19,34 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .employee-nav li {
-  padding: 15px;
+padding: 10px 20px;
   cursor: pointer;
-  display: block;
+  color: teal;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.employee-nav li:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+.employee-nav li.active:hover {
+  background-color: darkgrey;
+  color: rgb(62, 71, 71);
 }
 
 .employee-nav li.active {
-  background-color: #ddd;
+  width: 200px;
+  height: 100vh;
+  background-color: darkgrey;
   font-weight: bold;
+  position: fixed;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  margin: 0;
 }
 
 .main-content {
@@ -40,6 +55,7 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  margin-left: 80px;
 }
 
 .tabs {

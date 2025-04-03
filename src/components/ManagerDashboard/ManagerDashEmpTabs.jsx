@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ManagerDashEmpTabs.css';
 import useStore from '../../zustand/store';
+import EmployeeSideBar from '../EmployeeSideBar/EmployeeSideBar';
 import {
   Container,
   Paper,
@@ -40,7 +41,7 @@ const ManagerDashEmpTabs = () => {
   const [activeTab, setActiveTab] = useState('Weekly Content');
 
   return (
-    <div className="dashboard-container">
+    <div style={{ display: 'flex' }}>
       {/* Vertical Navigation for Employees */}
       <nav className="employee-nav">
         <ul>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
 import ManagerDashEmpTabs from './ManagerDashEmpTabs';
-import EmployeeSideBar from '../EmployeeSideBar/employeeSideBar';
 
 // import {
 //   Container,
@@ -41,10 +40,7 @@ import EmployeeSideBar from '../EmployeeSideBar/employeeSideBar';
         <h1>Manager Dashboard</h1>
       </div>
       <ManagerDashEmpTabs />
-        <div>
-          {/* Side bar showing employees */}
-          <EmployeeSideBar />
-        </div>
+      
         <div>
           
         </div>
