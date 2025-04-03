@@ -16,6 +16,7 @@ const userRouter = require('./routes/user.router');
 const adminRouter = require('./routes/admin.router'); // dummy router
 const weekRouter = require('./routes/week.router');
 const assignmentsRouter = require('./routes/assignments.router');
+const dashboardRouter = require('./routes/dashboard.router');
 
 // Apply middleware:
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use('/api/user', userRouter);
 app.use('/api/week', weekRouter);
 app.use('/api/admin', adminRouter); 
 app.use('/api/assignments', assignmentsRouter);
+app.use('/api/dashboard', dashboardRouter);
 // Start the server:
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
