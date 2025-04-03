@@ -1,4 +1,13 @@
 import { useState, useEffect } from "react";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Container,
+  Paper,
+  Grid
+} from "@mui/material";
 
 function EditWeeklyContent({
   weekData,
@@ -40,57 +49,89 @@ function EditWeeklyContent({
   };
 
   return (
-    <div className="edit-weekly-content">
-      <form onSubmit={handleSubmit}>
-        <label>Quarter Title:</label>
-        <input
-          type="text"
-          name="quarter_title"
-          value={formData.quarter_title}
-          onChange={handleChange}
-          required
-        />
+    <Container component="main" maxWidth="md">
+      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+        <Typography variant="h5" component="h2" gutterBottom>
+          {weekData ? "Edit Weekly Content" : "Add New Weekly Content"}
+        </Typography>
+        
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Quarter Title"
+                name="quarter_title"
+                value={formData.quarter_title}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Week"
+                name="week"
+                value={formData.week}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Theme"
+                name="theme"
+                value={formData.theme}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Manager Weekly Content"
+                name="content"
+                value={formData.content}
+                onChange={handleChange}
+                multiline
+                rows={4}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="This Week's Focus Content"
+                name="focus"
+                value={formData.focus}
+                onChange={handleChange}
+                multiline
+                rows={4}
+                required
+              />
+            </Grid>
+          </Grid>
 
-        <label>Week:</label>
-        <input
-          type="text"
-          name="week"
-          value={formData.week}
-          onChange={handleChange}
-          required
-        />
-
-        <label>Theme:</label>
-        <input
-          type="text"
-          name="theme"
-          value={formData.theme}
-          onChange={handleChange}
-          required
-        />
-
-        <label>Manager Weekly Content:</label>
-        <textarea
-          name="content"
-          value={formData.content}
-          onChange={handleChange}
-          required
-        />
-
-        <label>This Week's Focus Content:</label>
-        <textarea
-          name="focus"
-          value={formData.focus}
-          onChange={handleChange}
-          required
-        />
-
-        <div className="form-actions">
-          <button type="submit">Save Changes</button>
-          <button type="button" onClick={onCancel}>Cancel</button>
-        </div>
-      </form>
-    </div>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, gap: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={onCancel}
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Save Changes
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 
