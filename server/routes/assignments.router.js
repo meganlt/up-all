@@ -285,12 +285,11 @@ router.post('/assign', async (req, res) => {
       res.status(500).send('Server Error');
     }
   });
-  
-
 
   // ========================
   // GET: By Manager ID
   // ========================
+
   router.get('/manager/:id', async (req, res) => {
     const { id } = req.params;
     try {
