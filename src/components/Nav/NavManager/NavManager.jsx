@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import useStore from "../../../zustand/store";
+import { Button } from "@mui/material";
+
 function Manager() {
     const user = useStore((store) => store.user);
     const logOut = useStore((state) => state.logOut);
@@ -13,7 +15,7 @@ function Manager() {
                 <NavLink to="/my-account">{user.username}'s account</NavLink>
             </li>
             <li>
-                <button onClick={logOut}>Log Out</button>
+                <Button variant="outlined" onClick={logOut}>Log Out</Button>
             </li>
         </>
     );
