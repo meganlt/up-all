@@ -15,7 +15,7 @@ function NavPending() {
                 <NavLink to="/pending-role">Guests</NavLink>
                 </li>
                 <li>
-                <NavLink to="/my-account">{user.username}'s account</NavLink>
+                <NavLink to="/my-account">{user.first_name ? user.first_name : user.username}'s account</NavLink>
                 </li>
                 <li>
                     <Button variant="outlined" onClick={logOut}>Log Out</Button> 
