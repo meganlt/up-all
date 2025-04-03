@@ -221,7 +221,7 @@ router.post('/assign', async (req, res) => {
     }
   });
   
-   // ========================
+  // ========================
   // GET: Filter by Company and Manager
   // ========================
   router.get('/company/:company/manager/:manager_id', async (req, res) => {
@@ -247,6 +247,46 @@ router.post('/assign', async (req, res) => {
       res.status(500).send('Server Error');
     }
   });
+
+  // ========================
+  // POST: Filter by just Company, or by company + manager + quarter, or only show incomplete weeks, or everything at once. Why a POST and not a GET? Because We're sending complex, multi-field filter criteria in the request body, not in the URL.
+  // ========================
+  
+  router.post('/filter', async (req, res) => {
+    const {
+      company_name = null,
+      manager_id = null,
+      quarter_title = null,
+      active_date_start = null,
+      only_active = false
+    } = req.body;
+  
+    try {
+      const result = await pool.query(
+        `
+        SELECT pa.*, dw.quarter_title, dw.week, u1.username AS manager_name, u2.username AS team_member_name
+        FROM "pair_assignment" pa
+        JOIN "dashboard_week" dw ON pa.dashboard_week_id = dw.id
+        LEFT JOIN "user" u1 ON pa.manager_id = u1.id
+        LEFT JOIN "user" u2 ON pa.team_member_id = u2.id
+        WHERE
+          ($1::text IS NULL OR pa.company_name = $1)
+          AND ($2::int IS NULL OR pa.manager_id = $2)
+          AND ($3::text IS NULL OR dw.quarter_title = $3)
+          AND ($4::date IS NULL OR pa.active_date_start >= $4)
+          AND ($5::boolean IS FALSE OR pa.is_completed = FALSE)
+        ORDER BY dw.week;
+        `,
+        [company_name, manager_id, quarter_title, active_date_start, only_active]
+      );
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Error filtering assignments:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+
 
   // ========================
   // GET: By Manager ID
