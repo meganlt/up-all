@@ -48,7 +48,7 @@ function AdminManageUsers() {
           <h2>Users To Assign:</h2>
           <Table>
             <TableHead>
-              <TableRow sx={{ backgroundColor: 'primary.light' }}>
+              <TableRow sx={{ backgroundColor: 'info.main' }}>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Email</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Username</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Company</TableCell>
@@ -75,7 +75,7 @@ function AdminManageUsers() {
           <h2>All Users:</h2>
           <Table>
             <TableHead>
-              <TableRow sx={{ backgroundColor: 'primary.light' }}>
+              <TableRow sx={{ backgroundColor: 'info.main' }}>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Email</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Username</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Role</TableCell>

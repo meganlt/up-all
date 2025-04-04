@@ -21,11 +21,11 @@ const theme = createTheme({
       main: '#CEB324'
     },
     info: {
-      main: '#633761'
+      main: 'rgba(99, 55, 97, 1)'
     },
     background: {
       paper: 'white',
-      default: 'rgba(99, 55, 97, 0.25)'
+      default: 'rgba(99, 55, 97, 0.125)'
     },
     text: {
       primary: 'rgba(99, 55, 97, 1)'
