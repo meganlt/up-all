@@ -4,6 +4,8 @@ import useStore from '../../zustand/store';
 // imports for dialog form
 import * as React from 'react';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Grid2 from '@mui/material/Grid2';
 import CheckBox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -124,6 +126,8 @@ function AdminEditUser(userToEdit) {
               onSubmit: editOtherUser,
             },
           }}
+          fullWidth={true}
+          maxWidth={'md'}
         >
         <DialogTitle className="dialog-header">
         {
@@ -148,51 +152,67 @@ function AdminEditUser(userToEdit) {
           <CloseIcon />
         </IconButton>
         <DialogContent className="edit-container" dividers>
-          <div>
-          Email: {userToEdit.userToEdit.email} <br/>
-          Username: {userToEdit.userToEdit.username}<br/>
-          Company: {userToEdit.userToEdit.company}
-          </div>
-          <div>
-          <br/>
-          <label>Role:</label>
-          <select id="editRoleInput" defaultValue={userToEdit.userToEdit.role}>
-            <option value="manager">Manager</option>
-            <option value="associate">Associate</option>
-            <option value="pending">Pending</option>
-          </select>
-          <br/> <br/>
-          <label>Manager's Username:</label>
-          <input id="editManagerInput" type="text" defaultValue={userToEdit.userToEdit.manager_username}/>
-          <br/>
-          <label>Company:</label>
-          <input id="editCompanyInput" type="text" defaultValue={userToEdit.userToEdit.company}/>
-          <br/>
-          <label>Set Temporary Password:</label>
-          <input id="editPasswordInput" type="text" />
-          </div>
-        
-          
-          
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid2 container spacing={4}>
+              <Grid2  size={4} container spacing={4}>
+                Email: {userToEdit.userToEdit.email} <br/>
+                Username: {userToEdit.userToEdit.username}<br/>
+                Company: {userToEdit.userToEdit.company}
+              </Grid2>
+              <Grid2  size={8}>
+                <label>Role:</label>
+                <Select id="editRoleInput" defaultValue={userToEdit.userToEdit.role} fullWidth >
+                  <MenuItem value="manager">Manager</MenuItem>
+                  <MenuItem value="associate">Associate</MenuItem>
+                  <MenuItem value="pending">Pending</MenuItem>
+                </Select>
+                <br/> <br/>
+                <label>Manager's Username:</label>
+                <TextField id="editManagerInput" type="text" defaultValue={userToEdit.userToEdit.manager_username} fullWidth />
+                <br/>
+                <label>Company:</label>
+                <TextField id="editCompanyInput" type="text" defaultValue={userToEdit.userToEdit.company} fullWidth />
+                <br/>
+                <label>Set Temporary Password:</label>
+                <TextField id="editPasswordInput" type="text" fullWidth />
+              </Grid2>
+            </Grid2>
+            
+          </Box>
         </DialogContent>
         <DialogActions>
           {
             userToEdit.userToEdit.role === "pending" ? (
-              <>
-                <button onClick={deleteOtherUser}>reject</button>
-                <button type="submit">Assign User</button>
-              </>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid2 container spacing={6} padding={2}>
+                <Grid2 size={6}>
+                <Button color="error" variant="outlined" onClick={deleteOtherUser}>reject</Button>
+                </Grid2>
+                <Grid2 size={6} sx={{ textAlign: 'right' }}>
+                <Button variant="contained" type="submit">Assign User</Button>
+                </Grid2>
+                </Grid2>
+                
+                
+              </Box>
 
             ): (
-              <>
-                
-                <p>
-                  Delete Warning: this cannot be undone.<br/>
-                  If this is a manager, please delete or reassign their assigned associates first. <br/>
-                <button onClick={deleteOtherUser}>delete user</button>
-                </p>
-                <button type="submit">Edit User</button>
-              </>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid2 container spacing={6} padding={2}>
+                  <Grid2 size={6}>
+                    <Button color="error" variant="outlined"  onClick={deleteOtherUser}>delete user</Button>
+                    <DialogContentText color="error">
+                      <b>Delete Warning:</b> <br/>
+                      This cannot be undone. <br/>
+                      If this is a manager, please delete or reassign their assigned associates first. 
+                      <br/>
+                    </DialogContentText>
+                  </Grid2>
+                  <Grid2 size={6} sx={{ textAlign: 'right' }}>
+                    <Button variant="contained" type="submit">Edit User</Button>
+                  </Grid2>
+                </Grid2>
+              </Box>
               
             )
           }
