@@ -6,6 +6,7 @@ const pool = require('../modules/pool');
 // joined with the dashboard_week content (title, theme, focus, etc.), and team member ID is NULL because it's the managers personal training)
 
 router.get('/manager/:id', async (req, res) => {
+
     const managerId = req.params.id;
   
     try {
