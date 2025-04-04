@@ -4,8 +4,48 @@ import {
   Route,
   Navigate
 } from "react-router-dom";
-
 import useStore from '../../zustand/store';
+// Define a custom theme for Material UI
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Quicksand', Arial, sans-serif",
+    fontSize: 16
+  },
+  palette: {
+    primary: {
+      main: 'rgb(28, 164, 198)'
+    },
+    secondary: {
+      main: '#CEB324'
+    },
+    info: {
+      main: 'rgba(99, 55, 97, 1)'
+    },
+    background: {
+      paper: 'white',
+      default: 'rgba(99, 55, 97, 0.125)'
+    },
+    text: {
+      primary: 'rgba(99, 55, 97, 1)'
+    }
+  },
+  components:{
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontWeight: 'bold',
+          fontSize: '1.14rem',
+          textTransform: 'capitalize'
+        },
+        contained: {
+          color: 'white'
+        }
+      }
+    }
+  }
+});
 import Nav from '../Nav/Nav';
 import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
@@ -35,7 +75,8 @@ function App() {
   }
 
   return (
-    <>
+    <><ThemeProvider theme={theme}>
+      <CssBaseline />
       <header>
         <img className="header-logo" src="../../../public/UpAll_Logo.svg"/>
         <Nav />
@@ -202,6 +243,7 @@ function App() {
       <footer>
         <p>Copyright © {new Date().getFullYear()}</p>
       </footer>
+      </ThemeProvider>
     </>
   );
 }
