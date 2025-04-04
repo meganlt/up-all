@@ -5,7 +5,7 @@ const pool = require('../modules/pool');
 // GET: Manager's Current Week Assignment (Manager will see current active week based on present day from the pair-assignments table
 // joined with the dashboard_week content (title, theme, focus, etc.), and team member ID is NULL because it's the managers personal training)
 
-router.get('/manager/:id/weeks/current-and-previous', async (req, res) => {
+router.get('/manager/:id', async (req, res) => {
     const managerId = req.params.id;
   
     try {
