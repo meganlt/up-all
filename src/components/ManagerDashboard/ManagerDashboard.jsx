@@ -34,8 +34,82 @@ import ManagerDashEmpTabs from './ManagerDashEmpTabs';
   // }, []);
 
   function ManagerDashboard() {
+    const user = useStore((state) => state.user);
+    const fetchUser = useStore((state) => state.fetchUser);
+    const dashboardContent = useStore((state) => state.dashboardContent);
+    const fetchDashboardContent = useStore((state) => state.fetchDashboardContent);
+
+    const dummyData = [
+      { 
+        id: 1,
+        manager_id: 5,
+        team_member: 7,
+        team_member_username: 'spidergwen',
+        team_member_firstName: 'Gwen',
+        team_member_lastName: 'Stacy',
+        company: 'Inc',
+        dashboard_week_id: 4,
+        quarter_title: 'Effective Meetings',
+        week: 3,
+        theme: 'Psychological Safety',
+        focus: 'Practice safe stuff mmmkay',
+        content: 'why stuff matters and main content here'
+      },
+      {
+        id: 1,
+        manager_id: 5,
+        team_member: 8,
+        team_member_username: 'venom',
+        team_member_firstName: 'Venom',
+        team_member_lastName: 'Sauce',
+        company: 'Inc',
+        dashboard_week_id: 4,
+        quarter_title: 'Effective Meetings',
+        week: 3,
+        theme: 'Psychological Safety',
+        focus: 'Practice safe stuff mmmkay',
+        content: 'why stuff matters and main content here'
+      },
+      {
+        id: 1,
+        manager_id: 5,
+        team_member: 9,
+        team_member_username: 'peterp',
+        team_member_firstName: 'Peter',
+        team_member_lastName: 'Parker',
+        company: 'Inc',
+        dashboard_week_id: 4,
+        quarter_title: 'Effective Meetings',
+        week: 3,
+        theme: 'Psychological Safety',
+        focus: 'Practice safe stuff mmmkay',
+        content: 'why stuff matters and main content here'
+      }
+    ];
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        await fetchUser(); // wait for user to be fetched
+    
+        // Access the updated user directly from the store
+        const latestUser = useStore.getState().user;
+        const managerId = latestUser.id;
+        console.log(managerId);
+        if (managerId) {
+          await fetchDashboardContent(managerId);
+          console.log(dashboardContent);
+        }
+      };
+    
+      fetchData();
+      console.log(dashboardContent);
+      
+    }, []);
+
     return (
       <div className='container-manager-dashboard'>
+        {JSON.stringify(dashboardContent)}
       <div style={{ marginLeft: '200px', padding: '20px 0 0 20px' }}>
         <h1>Manager Dashboard</h1>
       </div>
