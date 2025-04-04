@@ -31,6 +31,10 @@ function AdminEditUser(userToEdit) {
   const [openEdit, setOpenEdit] = useState(false);
   const handleEditClickOpen = () => {  setOpenEdit(true);};
   const handleEditClose = () => {  setOpenEdit(false); };
+
+  // Initial hook and setup for select field
+  const [ role, setRole ] = useState( userToEdit.userToEdit.role );
+  const handleRoleChange = (event) => {  setRole(event.target.value);};
     
   function editOtherUser(e){
     e.preventDefault();
@@ -43,7 +47,7 @@ function AdminEditUser(userToEdit) {
     // assemble objectToSend
     let objectToSend = {
       userId: userToEdit.userToEdit.id,
-      userRole: document.getElementById('editRoleInput').value,
+      userRole: role,
       userManager: document.getElementById('editManagerInput').value,
       userCompany: document.getElementById('editCompanyInput').value,
       userPassword: document.getElementById('editPasswordInput').value
@@ -163,7 +167,14 @@ function AdminEditUser(userToEdit) {
               </Grid2>
               <Grid2  size={8}>
                 <label>Role:</label>
-                <Select id="editRoleInput" defaultValue={userToEdit.userToEdit.role} fullWidth size="small">
+                <Select 
+                  id="editRoleInput" 
+                  defaultValue={userToEdit.userToEdit.role}
+                  value={role} 
+                  fullWidth 
+                  size="small"
+                  onChange={handleRoleChange}
+                >
                   <MenuItem value="manager">Manager</MenuItem>
                   <MenuItem value="associate">Associate</MenuItem>
                   <MenuItem value="pending">Pending</MenuItem>
