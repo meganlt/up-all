@@ -9,6 +9,11 @@ import {
   List,
   ListItem,
   ListItemText,
+  Table,
+  TableBody,
+  TableHead,
+  TableCell,
+  TableRow,
   Tabs,
   Tab,
   AppBar,
@@ -41,59 +46,59 @@ function AdminManageUsers() {
       <Paper elevation={1} sx={{ p: 4, mb: 4 }}>
       <div>
           <h2>Users To Assign:</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Company</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: 'primary.light' }}>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Email</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Username</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Company</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
             {
               pendingUsers.map( (userToEdit, index)=>(
-                <tr key={index}>
-                  <td>{userToEdit.email}</td>
-                  <td>{userToEdit.username}</td>
-                  <td>{userToEdit.company}</td>
-                  <td><AdminEditUser userToEdit={userToEdit}/></td>
-                </tr>
+                <TableRow key={index}>
+                  <TableCell>{userToEdit.email}</TableCell>
+                  <TableCell>{userToEdit.username}</TableCell>
+                  <TableCell>{userToEdit.company}</TableCell>
+                  <TableCell><AdminEditUser userToEdit={userToEdit}/></TableCell>
+                </TableRow>
               ))
             }
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </Paper>
       <Paper elevation={1} sx={{ p: 4, mb: 4 }}>
         <div>
           <h2>All Users:</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Manager Assigned</th>
-                <th>Company</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: 'primary.light' }}>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Email</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Username</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Role</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Manager Assigned</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Company</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
             {
               assignedUsers.map( (userToEdit, index)=>(
-                <tr key={index}>
-                  <td>{userToEdit.email}</td>
-                  <td>{userToEdit.username}</td>
-                  <td>{userToEdit.role}</td>
-                  <td>{userToEdit.manager_username}</td>
-                  <td>{userToEdit.company}</td>
-                  <td><AdminEditUser userToEdit={userToEdit}/></td>
-                </tr>
+                <TableRow key={index}>
+                  <TableCell>{userToEdit.email}</TableCell>
+                  <TableCell>{userToEdit.username}</TableCell>
+                  <TableCell>{userToEdit.role}</TableCell>
+                  <TableCell>{userToEdit.manager_username}</TableCell>
+                  <TableCell>{userToEdit.company}</TableCell>
+                  <TableCell><AdminEditUser userToEdit={userToEdit}/></TableCell>
+                </TableRow>
               ))
             }
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </Paper>
       

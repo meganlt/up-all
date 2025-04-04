@@ -109,9 +109,9 @@ function AdminEditUser(userToEdit) {
     <>
       {
         userToEdit.userToEdit.role === "pending" ? (
-          <button onClick={handleEditClickOpen}>Assign User</button>
+          <Button variant="outlined" onClick={handleEditClickOpen}>Assign User</Button>
         ): (
-          <button onClick={handleEditClickOpen}>Edit User</button>
+          <Button variant="outlined" onClick={handleEditClickOpen}>Edit User</Button>
         )
       }
       <Dialog
