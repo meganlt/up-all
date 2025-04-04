@@ -30,4 +30,57 @@ router.get('/manager/:id', async (req, res) => {
     }
   });
 
-module.exports = router;
+// PUT: Manager submits their weekly dashboard check-in (When a manager completes their weekly dashboard check-in, 
+// this route will update the manager_check_ins table and turn the follow-up and status_read columns from false to true 
+// and also update the pair_assignment table is_completed from false to true).
+
+router.put('/manager-checkin/:manager_id/:dashboard_week_id', async (req, res) => {
+    const { manager_id, dashboard_week_id } = req.params;
+    const { follow_up, status_read } = req.body;
+  
+    const client = await pool.connect();
+  
+    try {
+      await client.query('BEGIN');
+  
+      // 1. Update the manager_check_ins table
+      await client.query(
+        `
+        UPDATE "manager_check_ins"
+        SET 
+          "follow_up" = $1,
+          "status_read" = $2,
+          "updated_at" = NOW()
+        WHERE "manager_id" = $3 AND "week_of" = $4
+        RETURNING *;
+        `,
+        [follow_up, status_read, manager_id, dashboard_week_id]
+      );
+  
+      // 2. If they checked "I have read this", mark the assignment complete too
+      if (status_read) {
+        await client.query(
+          `
+          UPDATE "pair_assignment"
+          SET "is_completed" = TRUE,
+              "updated_at" = NOW()
+          WHERE "manager_id" = $1
+            AND "team_member_id" IS NULL
+            AND "dashboard_week_id" = $2;
+          `,
+          [manager_id, dashboard_week_id]
+        );
+      }
+  
+      await client.query('COMMIT');
+      res.status(200).json({ message: 'Check-in submitted successfully.' });
+    } catch (error) {
+      await client.query('ROLLBACK');
+      console.error('Error updating manager check-in:', error.message);
+      res.status(500).send('Server Error');
+    } finally {
+      client.release();
+    }
+  });
+
+  module.exports = router;
