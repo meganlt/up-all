@@ -18,6 +18,7 @@ router.get('/manager/:id', async (req, res) => {
           dw.theme,
           dw.focus,
           dw.content,
+          u.username AS team_member_username,
           u.first_name AS team_member_first_name,
           u.last_name AS team_member_last_name
         FROM "pair_assignment" pa
@@ -28,7 +29,7 @@ router.get('/manager/:id', async (req, res) => {
             CURRENT_DATE >= pa.active_date_start + (dw.week - 2) * interval '1 week'
             AND CURRENT_DATE <  pa.active_date_start + (dw.week) * interval '1 week'
           )
-        ORDER BY dw.week ASC;
+        ORDER BY pa.team_member_id NULLS FIRST, dw.week ASC;
         `,
         [managerId]
       );
@@ -38,6 +39,7 @@ router.get('/manager/:id', async (req, res) => {
         team_member: row.team_member_id
           ? {
               id: row.team_member_id,
+              username: row.team_member_username,
               first_name: row.team_member_first_name,
               last_name: row.team_member_last_name
             }
@@ -53,10 +55,11 @@ router.get('/manager/:id', async (req, res) => {
   
       res.status(200).json(formatted);
     } catch (error) {
-      console.error('Error fetching current and previous weeks:', error.message);
+      console.error('Error fetching current and previous weeks for manager:', error.message);
       res.status(500).send('Server Error');
     }
-  });  
+  });
+  
 
 // PUT: Manager submits their weekly dashboard check-in (When a manager completes their weekly dashboard check-in, 
 // this route will update the manager_check_ins table and turn the follow-up and status_read columns from false to true 
