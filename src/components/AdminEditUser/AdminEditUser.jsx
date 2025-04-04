@@ -155,26 +155,28 @@ function AdminEditUser(userToEdit) {
           <Box sx={{ flexGrow: 1 }}>
             <Grid2 container spacing={4}>
               <Grid2  size={4} container spacing={4}>
-                Email: {userToEdit.userToEdit.email} <br/>
-                Username: {userToEdit.userToEdit.username}<br/>
-                Company: {userToEdit.userToEdit.company}
+                <p>
+                  <b>Email:</b> {userToEdit.userToEdit.email}<br/>
+                  <b>Username:</b> {userToEdit.userToEdit.username}<br/>
+                  <b>Company:</b> {userToEdit.userToEdit.company}
+                </p>
               </Grid2>
               <Grid2  size={8}>
                 <label>Role:</label>
-                <Select id="editRoleInput" defaultValue={userToEdit.userToEdit.role} fullWidth >
+                <Select id="editRoleInput" defaultValue={userToEdit.userToEdit.role} fullWidth size="small">
                   <MenuItem value="manager">Manager</MenuItem>
                   <MenuItem value="associate">Associate</MenuItem>
                   <MenuItem value="pending">Pending</MenuItem>
                 </Select>
                 <br/> <br/>
                 <label>Manager's Username:</label>
-                <TextField id="editManagerInput" type="text" defaultValue={userToEdit.userToEdit.manager_username} fullWidth />
+                <TextField id="editManagerInput" type="text" defaultValue={userToEdit.userToEdit.manager_username} fullWidth size="small" sx={{ mb: 3}}/>
                 <br/>
                 <label>Company:</label>
-                <TextField id="editCompanyInput" type="text" defaultValue={userToEdit.userToEdit.company} fullWidth />
+                <TextField id="editCompanyInput" type="text" defaultValue={userToEdit.userToEdit.company} fullWidth size="small" sx={{ mb: 3}}/>
                 <br/>
                 <label>Set Temporary Password:</label>
-                <TextField id="editPasswordInput" type="text" fullWidth />
+                <TextField id="editPasswordInput" type="text" fullWidth size="small" sx={{ mb: 3}}/>
               </Grid2>
             </Grid2>
             
