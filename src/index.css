@@ -28,6 +28,10 @@ body {
   color: rgba(0, 0, 0, 0.75);
 }
 
+.message-error {
+  color: red;
+}
+
 /* Basic Header/Main/Footer Flexbox Layout: */
 #root {
   display: flex;
