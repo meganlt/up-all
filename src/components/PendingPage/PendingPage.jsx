@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
-import { Logout } from '@mui/icons-material';
-
+import { Paper } from '@mui/material';
 
 function PendingPage() {
   
@@ -11,11 +10,13 @@ function PendingPage() {
 
   return (
     <>
-      <h1>PendingPage</h1>
-      <h2>You're registered! Check back soon.</h2>
-      <li>
-        <button onClick={Logout}>Log Out</button> 
-      </li>
+      <h1>You're registered!</h1>
+      
+      <Paper elevation={1} sx={{ p: 4, mb: 4 }}>
+        <h2>Your account is being setup. Please check back soon.</h2>
+        <img src="../../../public/manager-at-computer.jpeg" alt="Image of a man at his laptop"/>
+        <p>In the meantime, you can update your account information <a href="/my-account">here.</a></p>
+      </Paper>
     </>
   );
 }

@@ -12,10 +12,10 @@ function NavPending() {
             {user.id && (
             <>
                 <li>
-                <NavLink to="/pending-role">Guests</NavLink>
+                <NavLink to="/pending-role">Account Status</NavLink>
                 </li>
                 <li>
-                <NavLink to="/my-account">{user.first_name ? user.first_name : user.username}'s account</NavLink>
+                <NavLink to="/my-account">{user.first_name ? user.first_name : user.username}'s Account Settings</NavLink>
                 </li>
                 <li>
                     <Button variant="outlined" onClick={logOut}>Log Out</Button> 
