@@ -12,7 +12,7 @@ function Manager() {
                 <NavLink to="/manager-dashboard">My Dashboard</NavLink>
             </li>
             <li>
-                <NavLink to="/my-account">{user.first_name ? user.first_name : user.username}'s account</NavLink>
+                <NavLink to="/my-account">{user.first_name ? user.first_name : user.username}'s Account</NavLink>
             </li>
             <li>
                 <Button variant="outlined" onClick={logOut}>Log Out</Button>
