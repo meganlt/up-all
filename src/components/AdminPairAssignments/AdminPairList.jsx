@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
 import axios from 'axios';
 
-
 function AdminPairList() {
   // State for pair assignments and errors.
   const [pairs, setPairs] = useState([]);
