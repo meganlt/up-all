@@ -31,6 +31,14 @@ fetchDashboardContent: function(managerId){
     }).catch( function(err){
         console.log(err);
     })
+},
+fetchTeamMembers: function(managerId){
+    axios.get(`/api/assignments/team-member-list/${managerId}`).then( function(results){
+        console.log(results.data);
+        set( {teamMembers: results.data} );
+    }).catch( function(err){
+        console.log(err);
+    })
 }
 })
 

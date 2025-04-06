@@ -24,12 +24,14 @@ import {
 } from '@mui/material';
 
 
-const ManagerDashEmpTabs = () => {
+const ManagerDashEmpTabs = (teamMembers) => {
   const user = useStore((state) => state.user);
   const [tabIndex, setTabIndex] = useState(0);
   const [lastWeekResponse, setLastWeekResponse] = useState('');
   const [readConfirmed, setReadConfirmed] = useState(false);
   const [followUpOption, setFollowUpOption] = useState('');
+
+  console.log('on tabs component:', teamMembers);
 
   useEffect(() => {
   }, []);
@@ -37,7 +39,7 @@ const ManagerDashEmpTabs = () => {
   const employees = ['Employee 1', 'Employee 2', 'Employee 3'];
 
   // State to track the selected employee and active tab
-  const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
+  const [selectedEmployee, setSelectedEmployee] = useState(teamMembers.teamMembers[0]);
   const [activeTab, setActiveTab] = useState('Weekly Content');
 
   return (
@@ -45,13 +47,13 @@ const ManagerDashEmpTabs = () => {
       {/* Vertical Navigation for Employees */}
       <nav className="employee-nav">
         <ul>
-          {employees.map((employee) => (
+        {teamMembers.teamMembers.map((member, index) => (
             <li
-              key={employee}
-              className={selectedEmployee === employee ? 'active' : ''}
-              onClick={() => setSelectedEmployee(employee)}
+              key={index}
+              className={selectedEmployee === member.username ? 'active' : ''}
+              onClick={() => setSelectedEmployee(member.username)}
             >
-              {employee}
+              {member.username}
             </li>
           ))}
         </ul>

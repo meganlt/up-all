@@ -36,8 +36,13 @@ import ManagerDashEmpTabs from './ManagerDashEmpTabs';
   function ManagerDashboard() {
     const user = useStore((state) => state.user);
     const fetchUser = useStore((state) => state.fetchUser);
+    const teamMembers = useStore((state)=> state.teamMembers);
+    const fetchTeamMembers = useStore((state)=> state.fetchTeamMembers);
     const dashboardContent = useStore((state) => state.dashboardContent);
     const fetchDashboardContent = useStore((state) => state.fetchDashboardContent);
+
+
+    console.log(user);
 
     const dummyData = [
       { 
@@ -97,6 +102,7 @@ import ManagerDashEmpTabs from './ManagerDashEmpTabs';
         const managerId = latestUser.id;
         console.log(managerId);
         if (managerId) {
+          await fetchTeamMembers(managerId);
           await fetchDashboardContent(managerId);
           console.log(dashboardContent);
         }
@@ -104,16 +110,20 @@ import ManagerDashEmpTabs from './ManagerDashEmpTabs';
     
       fetchData();
       console.log(dashboardContent);
+      console.log('team members:', teamMembers);
       
     }, []);
 
     return (
       <div className='container-manager-dashboard'>
+        <p>Dashboard Data:</p>
         {JSON.stringify(dashboardContent)}
+        <p>Team member data:</p>
+        {JSON.stringify(teamMembers)}
       <div style={{ marginLeft: '200px', padding: '20px 0 0 20px' }}>
         <h1>Manager Dashboard</h1>
       </div>
-      <ManagerDashEmpTabs />
+      <ManagerDashEmpTabs teamMembers={teamMembers}/>
       
         <div>
           

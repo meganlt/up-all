@@ -366,4 +366,19 @@ router.post('/assign', async (req, res) => {
     }
   });
 
+  // - Get all team members under a specific manager
+  router.get('/team-member-list/:id', (req, res)=>{
+    const queryString = `
+    SELECT *
+    FROM "user"
+    WHERE "manager_assigned" = $1;`;
+    const managerId = req.params.id;
+    pool.query( queryString, [managerId] ).then( (results)=>{
+      res.send( results.rows );
+    }).catch( (err)=>{
+        console.log(err);
+        res.sendStatus(400);
+    })
+  })
+
 module.exports = router;
