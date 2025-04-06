@@ -187,6 +187,6 @@ router.delete('/delete/pair', async (req, res) => {
     console.error('Error deleting pair assignment group:', error.message);
     res.status(500).send('Server Error');
   }
-});
+})
 
 module.exports = router;
