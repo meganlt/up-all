@@ -9,6 +9,7 @@ axios.defaults.withCredentials = true;
 const createAdminSlice = (set, get) => ({
   assignedUsers: [],
   pendingUsers: [],
+  pairAssignments: [],
   fetchAssignedUsers: async () => {
     //  retreive all assigned users
     try {
@@ -27,6 +28,15 @@ const createAdminSlice = (set, get) => ({
     } catch (err) {
       console.log('fetchUser error:', err);
       set({pendingUsers : {}});
+    }
+  },
+  fetchPairAssignments: async()=>{
+    console.log('in fetchPairAssignments');
+    try {
+      const {data} = await axios.get('/api/assignments');
+      set({ pairAssignments: data });
+    } catch (err){
+      console.log('fetchPairAssignments error:', err);
     }
   }
 })
