@@ -2,24 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
 
-// POST: create a new Check-in row for Manager ID
-// router.post('/', async(req,res)=>{
-
-  // const values = [ managerId ]
-  // try{
-  //   const result = await pool.query(`
-  //     INSERT INTO "manager_check_ins" ("manager_id", "dashboard_week_id", "follow_up", "status_read") VALUES ($1, $2, $3, $4) RETURNING *;
-  //     `, [] );
-  // } catch (error) {
-  //   console.log('Error creating a new manager check-in:', error.message);
-  //   res.status(500).send('Server Error: Problem creating new checkin');
-  // }
-// })
-
 
 // GET all Check-Ins
 router.get('/', async (req, res) => {
-  console.log('in managerCheckIn GET');
     try {
       const result = await pool.query(`
         SELECT * FROM "manager_check_ins"
