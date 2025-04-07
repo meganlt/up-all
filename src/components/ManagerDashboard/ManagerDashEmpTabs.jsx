@@ -67,12 +67,13 @@ const ManagerDashEmpTabs = (teamMembers) => {
           orientation="vertical"
           value={value}
           onChange={handleChange}
-          sx={{ borderRight: 1, borderColor: 'divider', width:'100%' }}
+          sx={{ borderRight: 1, borderColor: 'divider', width:'20%' }}
         >
           {teamMembers.teamMembers.map((member, index) => (
             <Tab label={member.username} key={index} />
           ))}
         </Tabs>
+        <div className="tab-contents">
         {teamMembers.teamMembers.map((member, index) => {
           const memberDashboard = dashboardContent.find(
             (content) => content.team_member.username === member.username
@@ -80,27 +81,26 @@ const ManagerDashEmpTabs = (teamMembers) => {
 
           return (
               <TabPanel value={value} index={index} key={index} sx={{width: '100%'}}>
-                <Box sx={{ width: '100%', minHeight: '300px', flexGrow: 1 }}>
                   {memberDashboard ? (
                   <>
-                    <Typography variant="h6" gutterBottom>
+                    <p>
                       {memberDashboard.theme}
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
+                    </p>
+                    <p>
                       Focus: {memberDashboard.focus}
-                    </Typography>
-                    <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                    </p>
+                    <p>
                       {memberDashboard.content}
-                    </Typography>
+                    </p>
                   </>  
                     
                   ) : (
-                    <Typography>No content to display for {member.username}.</Typography>
+                    <p>No content to display for {member.username}.</p>
                   )}
-                  </Box >
               </TabPanel>
           );
         })}
+        </div>
         {/* <TabPanel value={value} index={0}>
           Content for Tab One sdlkjfal;kjf ;lsakdjf;lasdkjf ;lasdkjf;alskdjfas
         </TabPanel>
