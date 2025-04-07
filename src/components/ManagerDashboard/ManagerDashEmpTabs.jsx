@@ -62,7 +62,7 @@ const ManagerDashEmpTabs = (teamMembers) => {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex'}} >
+      <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', width: '100%'}} >
         <Tabs
           orientation="vertical"
           value={value}
@@ -70,7 +70,7 @@ const ManagerDashEmpTabs = (teamMembers) => {
           sx={{ borderRight: 1, borderColor: 'divider', width:'100%' }}
         >
           {teamMembers.teamMembers.map((member, index) => (
-            <Tab label={member.username} key={index} sx={{ width: 200}}>{member.username}{index}</Tab>
+            <Tab label={member.username} key={index} />
           ))}
         </Tabs>
         {teamMembers.teamMembers.map((member, index) => {
@@ -79,28 +79,26 @@ const ManagerDashEmpTabs = (teamMembers) => {
           );
 
           return (
-            <TabPanel value={value} index={index} key={index} sx={{width: '80%'}}>
-              {memberDashboard ? (
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    {memberDashboard.theme}
-                  </Typography>
-                  <Typography variant="subtitle1" gutterBottom>
-                    Focus: {memberDashboard.focus}
-                  </Typography>
-                  <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
-                    {memberDashboard.content}
-                  </Typography>
-                </Box>
-              ) : (
-                <>
-                                <Typography>No content to display for {member.username}.</Typography>
-                <Typography>No content to display for {member.username}.Nullam condimentum, lorem vel elementum fringilla, sapien sapien rutrum magna, eget accumsan ex mi at tortor.met lectus ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce at viverra turpis, sed suscipit justo. Ut ultricies nibh a ligula posuere, sit amet lacinia urna efficitur. Donec lectus orci, lacinia ut libero ac, blandit feugiat ante. Vestibulum consectetur, nunc at volutpat pretium, ipsum ex interdum massa, non fermentum urna nunc nec odio. Vestibulum lobortis mi nec nibh facilisis maximus. Nam mauris ipsum, aliquet quis justo nec, venenatis hendrerit massa. Donec iaculis massa vitae convallis efficitur.</Typography>
-                <Typography>No content to display for {member.username}.</Typography>
-                </>
-
-              )}
-            </TabPanel>
+              <TabPanel value={value} index={index} key={index} sx={{width: '100%'}}>
+                <Box sx={{ width: '100%', minHeight: '300px', flexGrow: 1 }}>
+                  {memberDashboard ? (
+                  <>
+                    <Typography variant="h6" gutterBottom>
+                      {memberDashboard.theme}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Focus: {memberDashboard.focus}
+                    </Typography>
+                    <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                      {memberDashboard.content}
+                    </Typography>
+                  </>  
+                    
+                  ) : (
+                    <Typography>No content to display for {member.username}.</Typography>
+                  )}
+                  </Box >
+              </TabPanel>
           );
         })}
         {/* <TabPanel value={value} index={0}>
