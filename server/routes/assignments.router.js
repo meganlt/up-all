@@ -152,26 +152,6 @@ router.post('/assign', async (req, res) => {
     try {
       await client.query('BEGIN');
   
-      // Apply to manager
-      await client.query(
-        `
-        WITH weeks AS (
-          SELECT * FROM "dashboard_week"
-          WHERE "quarter_title" = $1
-          ORDER BY "week"
-        )
-        INSERT INTO "pair_assignment" (
-          "admin_id", "manager_id", "team_member_id", "company_name",
-          "dashboard_week_id", "active_date_start"
-        )
-        SELECT
-          $2, $3, NULL, $4, weeks.id,
-          ($5::DATE + (weeks.week - 1) * INTERVAL '1 week')::DATE
-        FROM weeks;
-        `,
-        [quarter_title, admin_id, manager_id, company_name, active_date_start]
-      );
-  
       // Apply to team member (if one is selected)
       if (team_member_id) {
         await client.query(
