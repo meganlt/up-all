@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
 import useStore from '../../zustand/store';
 import axios from 'axios';
+import {
+  Select, MenuItem, FormControl, InputLabel, Table, TableBody,
+  TableCell, TableContainer, TableHead, TableRow, Paper, Box
+} from '@mui/material';
 
 function AdminPairList() {
 
-    // TODO:
-  // Create hook for pair assignments
-  const [ pairs, setPairs ] = useState([]);
   const pairAssignments = useStore( (state) => state.pairAssignments);
   const fetchPairAssignments = useStore((state) => state.fetchPairAssignments);
   const [weeks, setWeeks] = useState([]);
@@ -84,42 +85,90 @@ function AdminPairList() {
   console.log('formatted:', formattedAssignments);
   console.log('grouped assignments:',groupedAssignments);
 
+  // hooks for filtering
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedManager, setSelectedManager] = useState('');
+  const companies = [...new Set(formattedAssignments.map((row) => row.company_name))];
+  const managers = [...new Set(formattedAssignments.map((row) => row.manager))];
+  const filteredRows = formattedAssignments.filter((row) => {
+    return (
+      (selectedCompany === '' || row.company_name === selectedCompany) &&
+      (selectedManager === '' || row.manager === selectedManager)
+    );
+  });
+
   useEffect(() => {
     fetchPairAssignments();
     fetchWeeks();
   }, [])
 
   return (
-    <div className='_template'>
+    <div className='admin-pair-list'>
      <h2>All Pair Assignments</h2>
-    <button>filter by company</button>
-    <button>filter by manager</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Company Name:</th>
-          <th>Manager:</th>
-          <th>Team Member:</th>
-          <th>Quarter Title:</th>
-          <th>Active Dates:</th>
+     <Box sx={{ p: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>Filter by Company</InputLabel>
+          <Select
+            value={selectedCompany}
+            onChange={(e) => setSelectedCompany(e.target.value)}
+            label="Filter by Company"
+          >
+            <MenuItem value="">All Companies</MenuItem>
+            {companies.map((company, i) => (
+              <MenuItem key={i} value={company}>{company}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>Filter by Manager</InputLabel>
+          <Select
+            value={selectedManager}
+            onChange={(e) => setSelectedManager(e.target.value)}
+            label="Filter by Manager"
+          >
+            <MenuItem value="">All Managers</MenuItem>
+            {managers.map((manager, i) => (
+              <MenuItem key={i} value={manager}>{manager}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <TableContainer component={Paper}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Company Name:</TableCell>
+          <TableCell>Manager:</TableCell>
+          <TableCell>Team Member:</TableCell>
+          <TableCell>Quarter Title:</TableCell>
+          <TableCell>Active Dates:</TableCell>
           {/* <th>Edit</th> */}
-        </tr>
-      </thead>
-      <tbody>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {
-          formattedAssignments.map( (pair, index)=>(
-            <tr key={index}>
-              <td>{pair.company_name}</td>
-              <td>{pair.manager}</td>
-              <td>{pair.team_member}</td>
-              <td>{pair.quarter_title}</td>
-              <td>{pair.active_dates}</td>
+          filteredRows.map( (pair, index)=>(
+            <TableRow key={index}>
+              <TableCell>{pair.company_name}</TableCell>
+              <TableCell>{pair.manager}</TableCell>
+              <TableCell>{pair.team_member}</TableCell>
+              <TableCell>{pair.quarter_title}</TableCell>
+              <TableCell>{pair.active_dates}</TableCell>
               {/* <td></td> */}
-            </tr>
+            </TableRow>
           ))
         }
-      </tbody>
-    </table>
+        {filteredRows.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} align="center">No results</TableCell>
+              </TableRow>
+            )}
+      </TableBody>
+    </Table>
+    </TableContainer>
+    </Box>
     </div>
   );
 }

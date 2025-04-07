@@ -137,7 +137,7 @@ function AdminNewPairAssignment() {
         <label>Start Date:</label>
         <input required type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
 
-        <button type="submit">Assign Week</button>
+        <button type="submit">Create Assignment</button>
       </form>
     </div>
   );
