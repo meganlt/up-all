@@ -32,11 +32,11 @@ function AdminPairList() {
 
   const groupedAssignments = useMemo(() => {
     if (!pairAssignments.length || !weeks.length) return [];
-  
+
     const weekToQuarter = new Map(
-      weeks.map(w => [w.week, w.quarter_title])
+      weeks.map(w => [w.id, w.quarter_title])
     );
-  
+    console.log(weekToQuarter);
     return Object.values(
       pairAssignments.reduce((acc, item) => {
         const key = `${item.manager_id}-${item.team_member_id}`;
