@@ -313,6 +313,7 @@ router.post('/assign', async (req, res) => {
   // PUT: Mark Week Complete
   // ========================
   router.put('/complete/:id', async (req, res) => {
+    console.log('in mark week PUT:', req.params, req.body);
     const { id } = req.params;
     try {
       const result = await pool.query(`

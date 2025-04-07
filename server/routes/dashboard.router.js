@@ -36,6 +36,7 @@ router.get('/manager/:id', async (req, res) => {
       );
   
       const formatted = result.rows.map(row => ({
+        pair_assignment_id: row.id,
         view_for: row.team_member_id ? "team_member" : "manager",
         team_member: row.team_member_id
           ? {
