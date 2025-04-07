@@ -117,9 +117,9 @@ import ManagerDashEmpTabs from './ManagerDashEmpTabs';
     return (
       <div className='container-manager-dashboard'>
         <p>Dashboard Data:</p>
-        {JSON.stringify(dashboardContent)}
+        {/* {JSON.stringify(dashboardContent)} */}
         <p>Team member data:</p>
-        {JSON.stringify(teamMembers)}
+        {/* {JSON.stringify(teamMembers)} */}
       <div style={{ marginLeft: '200px', padding: '20px 0 0 20px' }}>
         <h1>Manager Dashboard</h1>
       </div>
