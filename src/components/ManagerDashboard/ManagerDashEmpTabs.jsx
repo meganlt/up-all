@@ -50,19 +50,8 @@ const ManagerDashEmpTabs = (teamMembers) => {
   };
   const [tabContentArray , setTabContentArray] = useState([]);
 
-  console.log('on tabs component:', teamMembers);
-  console.log('on tabs component: dashboard content stuff:', dashboardContent);
-
-  
-
-  // First, check if a employee has dashboard content associated with them
-  function buildTabs(){
-    
-  }
-  // dashboardContent[index].team_member.username
-  // If so, populate the tab content with the corrrect dashboard content
-  // if not, populate the tab with "empty state" content: <p>This employee doesn't have anything yet!</p>
-
+  // console.log('on tabs component:', teamMembers);
+  // console.log('on tabs component: dashboard content stuff:', dashboardContent);
 
   useEffect(() => {
   }, []);
@@ -73,24 +62,47 @@ const ManagerDashEmpTabs = (teamMembers) => {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 300 }} >
+      <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex'}} >
         <Tabs
           orientation="vertical"
-          variant="scrollable"
           value={value}
           onChange={handleChange}
-          sx={{ borderRight: 1, borderColor: 'divider' }}
+          sx={{ borderRight: 1, borderColor: 'divider', width:'100%' }}
         >
           {teamMembers.teamMembers.map((member, index) => (
-            <Tab label={member.username} key={index}>{member.username}{index}</Tab>
+            <Tab label={member.username} key={index} sx={{ width: 200}}>{member.username}{index}</Tab>
           ))}
         </Tabs>
-        {teamMembers.teamMembers.map((member, index) => (
-            <TabPanel value={value} index={index}>
-              {member.username}{index}
+        {teamMembers.teamMembers.map((member, index) => {
+          const memberDashboard = dashboardContent.find(
+            (content) => content.team_member.username === member.username
+          );
 
+          return (
+            <TabPanel value={value} index={index} key={index} sx={{width: '80%'}}>
+              {memberDashboard ? (
+                <Box>
+                  <Typography variant="h6" gutterBottom>
+                    {memberDashboard.theme}
+                  </Typography>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Focus: {memberDashboard.focus}
+                  </Typography>
+                  <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                    {memberDashboard.content}
+                  </Typography>
+                </Box>
+              ) : (
+                <>
+                                <Typography>No content to display for {member.username}.</Typography>
+                <Typography>No content to display for {member.username}.Nullam condimentum, lorem vel elementum fringilla, sapien sapien rutrum magna, eget accumsan ex mi at tortor.met lectus ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce at viverra turpis, sed suscipit justo. Ut ultricies nibh a ligula posuere, sit amet lacinia urna efficitur. Donec lectus orci, lacinia ut libero ac, blandit feugiat ante. Vestibulum consectetur, nunc at volutpat pretium, ipsum ex interdum massa, non fermentum urna nunc nec odio. Vestibulum lobortis mi nec nibh facilisis maximus. Nam mauris ipsum, aliquet quis justo nec, venenatis hendrerit massa. Donec iaculis massa vitae convallis efficitur.</Typography>
+                <Typography>No content to display for {member.username}.</Typography>
+                </>
+
+              )}
             </TabPanel>
-          ))}
+          );
+        })}
         {/* <TabPanel value={value} index={0}>
           Content for Tab One sdlkjfal;kjf ;lsakdjf;lasdkjf ;lasdkjf;alskdjfas
         </TabPanel>
