@@ -88,3 +88,7 @@ padding: 10px 20px;
 .content-area {
   padding: 20px;
 }
+
+.tab-contents {
+  width: 80%;
+}

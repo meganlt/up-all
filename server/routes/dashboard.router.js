@@ -27,8 +27,8 @@ router.get('/manager/:id', async (req, res) => {
         LEFT JOIN "user" u ON pa.team_member_id = u.id
         WHERE pa.manager_id = $1
           AND (
-            CURRENT_DATE >= pa.active_date_start + (dw.week - 2) * interval '1 week'
-            AND CURRENT_DATE <  pa.active_date_start + (dw.week) * interval '1 week'
+            CURRENT_DATE >= pa.active_date_start
+            AND CURRENT_DATE <  pa.active_date_start + interval '1 week'
           )
         ORDER BY pa.team_member_id NULLS FIRST, dw.week ASC;
         `,
