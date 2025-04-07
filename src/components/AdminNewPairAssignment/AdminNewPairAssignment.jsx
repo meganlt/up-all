@@ -8,8 +8,6 @@ function AdminNewPairAssignment() {
   const assignedUsers = useStore((state) => state.assignedUsers);
   const fetchAssignedUsers = useStore((state) => state.fetchAssignedUsers);
 
-  console.log('weeks:', weeks);
-
   // State for selected options
   const [selectedCompany, setSelectedCompany] = useState('');
   const [selectedManager, setSelectedManager] = useState('');
@@ -23,9 +21,9 @@ function AdminNewPairAssignment() {
   const [managers, setManagers] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
 
-  console.log(assignedUsers);
-  console.log(uniqueCompanies);
-  console.log('quarters:', quarters);
+  // console.log(assignedUsers);
+  // console.log(uniqueCompanies);
+  // console.log('quarters:', quarters);
 
 
   // Fetch weeks so we can pull out all unique quarter titles
@@ -86,7 +84,7 @@ function AdminNewPairAssignment() {
     console.log(objectToSend);
     // TO DO: Axios POST call
     axios.post('/api/assignments/assign', objectToSend).then( function(response){
-      console.log(response.data);
+      // console.log(response.data);
     }).catch( function(err){
       alert('Error sending new assignment to server');
       console.log(err);
