@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
 
+
 // GET all Check-Ins
 router.get('/', async (req, res) => {
     try {
