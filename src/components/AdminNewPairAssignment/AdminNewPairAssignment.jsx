@@ -18,6 +18,8 @@ function AdminNewPairAssignment() {
   const [weeks, setWeeks] = useState([]);
   const assignedUsers = useStore((state) => state.assignedUsers);
   const fetchAssignedUsers = useStore((state) => state.fetchAssignedUsers);
+  const pairAssignments = useStore((state) => state.pairAssignments);
+  const fetchPairAssignments = useStore((state) => state.fetchPairAssignments);
 
   // State for selected options
   const [selectedCompany, setSelectedCompany] = useState('');
@@ -101,6 +103,7 @@ function AdminNewPairAssignment() {
     // TO DO: Axios POST call
     axios.post('/api/assignments/assign', objectToSend).then( function(response){
       // console.log(response.data);
+      fetchPairAssignments();
     }).catch( function(err){
       alert('Error sending new assignment to server');
       console.log(err);
