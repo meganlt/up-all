@@ -40,7 +40,7 @@ function LoginPage() {
       <Box sx={{ flexGrow: 1}}>
             <Grid2 container spacing={4}>
               <Grid2  size={6} container spacing={4} sx={{ backgroundColor: 'info.main' }}>
-                <img src="../../../public/members.jpg" width="100%" className="login-promo"/>
+                <img src="/members.jpg" width="100%" className="login-promo"/>
               </Grid2>
               <Grid2  size={6} sx={{ p: 4}}>
                 <h2>Login:</h2>
