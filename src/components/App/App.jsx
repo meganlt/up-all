@@ -137,7 +137,7 @@ function App() {
           <Route 
             exact path="/manager-dashboard"
             element={
-              user.id ? (
+              user.id && user.role=="manager"? (
                 <ManagerDashboard/> // Redirect authenticated user.
               ) : (
                 <LoginPage /> // Render LoginPage for unauthenticated user.
