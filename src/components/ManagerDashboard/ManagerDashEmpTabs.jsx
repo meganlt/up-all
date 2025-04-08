@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import './ManagerDashEmpTabs.css';
 import useStore from '../../zustand/store';
 import axios from 'axios';
-import EmployeeSideBar from '../EmployeeSideBar/EmployeeSideBar';
 import {
   Container,
   Paper,
