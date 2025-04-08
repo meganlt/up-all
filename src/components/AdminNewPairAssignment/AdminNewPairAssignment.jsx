@@ -129,12 +129,6 @@ function AdminNewPairAssignment() {
                   <MenuItem key={index} value={company}>{company}</MenuItem>
               ))}
             </Select>
-            {/* <select required value={selectedCompany} onChange={(e) => setSelectedCompany(e.target.value)}>
-              <option value="" disabled hidden >Select Company</option>
-              {uniqueCompanies.map((company, index) => (
-                <option key={index} value={company}>{company}</option>
-              ))}
-            </select> */}
           </Grid2>
           <Grid2 size={4}>
             {/* Manager Select */}
@@ -152,12 +146,6 @@ function AdminNewPairAssignment() {
                 <MenuItem key={manager.id} value={manager.id}>{manager.username}</MenuItem>
               ))}
             </Select>
-            {/* <select required value={selectedManager} onChange={(e) => setSelectedManager(e.target.value)}>
-              <option value="" disabled hidden >Select Manager</option>
-              {managers.map((manager) => (
-                <option key={manager.id} value={manager.id}>{manager.username}</option>
-              ))}
-            </select> */}
           </Grid2>
           <Grid2 size={4}>
             {/* Team Member Select */}
@@ -175,12 +163,6 @@ function AdminNewPairAssignment() {
                 <MenuItem key={member.id} value={member.id}>{member.username}</MenuItem>
               ))}
             </Select>
-            {/* <select required value={selectedTeamMember} onChange={(e) => setSelectedTeamMember(e.target.value)}>
-              <option value="" disabled hidden >Select Team Member</option>
-              {teamMembers.map((member) => (
-                <option key={member.id} value={member.id}>{member.username}</option>
-              ))}
-            </select> */}
           </Grid2>
         </Grid2>
         <Grid2 container spacing={4} sx={{mt: 4, mb:4}}>
@@ -200,12 +182,6 @@ function AdminNewPairAssignment() {
                 <MenuItem key={index} value={title}>{title}</MenuItem>
               ))}
             </Select>
-            {/* <select required value={selectedQuarter} onChange={(e) => setSelectedQuarter(e.target.value)} >
-              <option value="" disabled hidden >Select Quarter</option>
-              {quarters.map((title, index) => (
-                <option key={index} value={title}>{title}</option>
-              ))}
-            </select> */}
           </Grid2>
           <Grid2 size={6}>
             {/* Start Date */}
@@ -220,7 +196,6 @@ function AdminNewPairAssignment() {
                 shrink: true, // Keeps the label in the "shrunk" state, like it is in the placeholder
               }}
             />
-            {/* <input required type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} /> */}
           </Grid2>
         </Grid2>
         <Button variant="contained" type="submit">Create Assignment</Button>
