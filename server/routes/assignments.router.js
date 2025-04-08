@@ -328,7 +328,44 @@ router.post('/assign', async (req, res) => {
       res.status(500).send('Server Error');
     }
   });
-  
+
+  // ========================
+  // DELETE: Remove Chunk of Assignments by Pair & Quarter
+  // ========================
+ // Use POST instead of DELETE
+router.post('/bulk-delete', async (req, res) => {
+  const { manager_id, team_member_id, quarter_title } = req.body;
+
+  if (!manager_id || !quarter_title) {
+    return res.status(400).send('Missing required fields');
+  }
+
+  try {
+    const result = await pool.query(
+      `
+      DELETE FROM "pair_assignment"
+      USING "dashboard_week"
+      WHERE "pair_assignment"."dashboard_week_id" = "dashboard_week"."id"
+        AND "pair_assignment"."manager_id" = $1
+        AND ${
+          team_member_id !== null
+            ? '"pair_assignment"."team_member_id" = $2 AND "dashboard_week"."quarter_title" = $3'
+            : '"pair_assignment"."team_member_id" IS NULL AND "dashboard_week"."quarter_title" = $2'
+        }
+      RETURNING "pair_assignment".*;
+      `,
+      team_member_id !== null
+        ? [manager_id, team_member_id, quarter_title]
+        : [manager_id, quarter_title]
+    );
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error deleting full pair assignment:', error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
   // ========================
   // DELETE: Remove Assignment Row
   // ========================
@@ -345,43 +382,7 @@ router.post('/assign', async (req, res) => {
       console.error('Error deleting assignment row:', error.message);
       res.status(500).send('Server Error');
     }
-  });
-
-  // ========================
-  // DELETE: Remove Chunk of Assignments by Pair & Quarter
-  // ========================
-  router.delete('/bulk', async (req, res) => {
-    const { manager_id, team_member_id, quarter_title } = req.body;
-  
-    if (!manager_id || !quarter_title) {
-      return res.status(400).send('Missing required fields');
-    }
-  
-    try {
-      const result = await pool.query(
-        `
-        DELETE FROM "pair_assignment"
-        WHERE "manager_id" = $1
-          AND "quarter_title" = $2
-          AND ${
-            team_member_id !== null
-              ? '"team_member_id" = $3'
-              : '"team_member_id" IS NULL'
-          }
-        RETURNING *;
-        `,
-        team_member_id !== null
-          ? [manager_id, quarter_title, team_member_id]
-          : [manager_id, quarter_title]
-      );
-  
-      res.status(200).json(result.rows);
-    } catch (error) {
-      console.error('Error deleting full pair assignment:', error.message);
-      res.status(500).send('Server Error');
-    }
-  });
-  
+  }); 
 
   // - Get all team members under a specific manager
   router.get('/team-member-list/:id', (req, res)=>{
