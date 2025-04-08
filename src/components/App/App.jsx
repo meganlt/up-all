@@ -130,7 +130,7 @@ function App() {
               user.id && user.role == "admin" ? (
                 <AdminManageUsers/> // Redirect authenticated user.
               ) : (
-                <LoginPage /> // Render LoginPage for unauthenticated user.
+                <Navigate to="/" replace /> // Render LoginPage for unauthenticated user.
               )
             }
           />
@@ -140,7 +140,7 @@ function App() {
               user.id && user.role=="manager"? (
                 <ManagerDashboard/> // Redirect authenticated user.
               ) : (
-                <LoginPage /> // Render LoginPage for unauthenticated user.
+                <Navigate to="/" replace /> // Render LoginPage for unauthenticated user.
               )
             }
           />
@@ -151,7 +151,7 @@ function App() {
             user.id ? (
               <AssociateDashboard/>  // Redirect authenticated user.
             ):(
-              <LoginPage /> // Render LoginPage for unauthenticated user.
+              <Navigate to="/" replace /> // Render LoginPage for unauthenticated user.
             )
           }
           />
@@ -171,7 +171,7 @@ function App() {
               user.id && user.role == "admin" ? (
                 <WeeklyContent/> // Redirect authenticated user.
               ) : (
-                <LoginPage /> // Render LoginPage for unauthenticated user.
+                <Navigate to="/" replace /> // Render LoginPage for unauthenticated user.
               )
             }
           />
@@ -181,7 +181,7 @@ function App() {
               user.id && user.role == "admin" ? (
                 <AdminPairAssignments/> // Redirect authenticated user.
               ) : (
-                <LoginPage /> // Render LoginPage for unauthenticated user.
+                <Navigate to="/" replace /> // Render LoginPage for unauthenticated user.
               )
             }
           />
