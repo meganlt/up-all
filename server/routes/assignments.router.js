@@ -347,6 +347,42 @@ router.post('/assign', async (req, res) => {
     }
   });
 
+  // ========================
+  // DELETE: Remove Chunk of Assignments by Pair & Quarter
+  // ========================
+  router.delete('/bulk', async (req, res) => {
+    const { manager_id, team_member_id, quarter_title } = req.body;
+  
+    if (!manager_id || !quarter_title) {
+      return res.status(400).send('Missing required fields');
+    }
+  
+    try {
+      const result = await pool.query(
+        `
+        DELETE FROM "pair_assignment"
+        WHERE "manager_id" = $1
+          AND "quarter_title" = $2
+          AND ${
+            team_member_id !== null
+              ? '"team_member_id" = $3'
+              : '"team_member_id" IS NULL'
+          }
+        RETURNING *;
+        `,
+        team_member_id !== null
+          ? [manager_id, quarter_title, team_member_id]
+          : [manager_id, quarter_title]
+      );
+  
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Error deleting full pair assignment:', error.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+
   // - Get all team members under a specific manager
   router.get('/team-member-list/:id', (req, res)=>{
     const queryString = `
