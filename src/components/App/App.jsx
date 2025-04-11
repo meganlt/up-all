@@ -78,7 +78,7 @@ function App() {
     <><ThemeProvider theme={theme}>
       <CssBaseline />
       <header>
-        <img className="header-logo" src="../../../public/UpAll_Logo.svg"/>
+        <img className="header-logo" src="/UpAll_Logo.svg"/>
         <Nav />
       </header>
       <main>
