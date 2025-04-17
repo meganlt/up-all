@@ -67,6 +67,8 @@ router.put('/update', async (req, res) => {
   const { first_name, last_name, pronouns, job_title, email, password } = req.body;
   const userId = req.user.id;
 
+  
+
   if (!req.isAuthenticated()) {
     return res.status(401).send({ error: 'User not authenticated.' });
   }
@@ -84,6 +86,8 @@ router.put('/update', async (req, res) => {
           "email" = $5,
           "updated_at" = NOW()
     `;
+
+    
     let values = [first_name, last_name, pronouns, job_title, email];
 
     if (password) {
@@ -98,6 +102,18 @@ router.put('/update', async (req, res) => {
     const result = await pool.query(queryString, values);
 
     if (result.rowCount > 0) {
+      //fechting user data from the database
+      const query = `SELECT
+        "id",
+        "username",
+        "first_name",
+        "last_name",
+        "pronouns",
+        "job_title",
+        "email"
+      FROM "user"
+      WHERE "id" = $1;`;
+      const userResult = await pool.query(query, [userId]);
       res.sendStatus(200);
     } else {
       console.log('No rows updated for user ID:', userId);
@@ -107,6 +123,7 @@ router.put('/update', async (req, res) => {
     console.error('Error updating user:', err);
     res.status(500).send({ error: 'Internal server error.' });
   }
+
 });
 
 module.exports = router;

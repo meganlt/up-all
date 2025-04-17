@@ -1,72 +1,181 @@
+# Prime Solo Project
+
 Authors: Junior Avalos, Jake Berg, Megan Tegeder, Will Shuford, Michael Silas
 
-# Prime Solo Project - Starting Repo
+## 🌟 Overview
+We built a web application designed to **enhance manager/employee relationships** through structured 1:1 meetings, engagement tracking, and leadership development tools. Built for [UpAll](https://upallleaders.com) to address: 
+- 70% employee engagement (costing $350B annually)
+- 6% engagement drop in remote/hybrid work
+- Lack of tools for tracking psychological drivers of performance
 
-This version uses React, Zustand, Express, Passport, and PostgreSQL. (A full list of dependencies can be found in `package.json`.)
+**Key Outcomes** 
+- 43% lower turnover 📉
+- 18% higher productivity 📈
+- 23% increased profitability 💰
+
+---
+
+## ✨ Core Features 
+
+### **User Management**
+- Role-based access (Admin/Manager/Associate)
+- Secure registration and authentication
+- Admin dashboard for user assignment
+
+### **Manager Tools** 
+- **Weekly Content Hub**: Admin-curated leadership resources
+- **1:1 Meeting System**: Task synchonization between managers/employees
+- **OKR Tracking**: Quarterly goal alignment
+
+### **Employee Experience**
+
+---
+
+## Technical Implementation
+
+### Tech Stack 
+| Layer       | Technology      |
+|-------------|-----------------|
+| Frontend    | React, Zustand  |
+| Backend     | Node.js, Express|
+| Database    | PostgreSQL      |
+| Deployment  | Heroku          |
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Setup Instructions](#setup-instructions)
+- [Database Setup](#database-setup)
+- [Folder Structure](#folder-structure)
+- [Usage](#usage)
+- [Features](#features)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Prerequisites
 
-Before you get started, make sure you have the following software installed on your computer:
-
+Ensure you have the following installed:
 - [Node.js](https://nodejs.org/en)
 - [PostgreSQL](https://www.postgresql.org)
 - [Nodemon](https://nodemon.io)
 
-## Create Database and User Table
+## Setup Instructions
 
-Create a new database, then create a `user` table using the query found in `database.sql`.
+1. **Clone the Repository**
+   ```bash
+   git clone <repo-url>
+   cd up-all
+   ```
 
-* Note: `pool.js` is initially configured to connect to a database named `prime_app`. If you choose your own name, you'll need to modify `pool.js` so it knows how to connect to your database.
+2. **Install Dependencies**
+   From the root directory of the project, run:
+   ```bash
+   npm install
+   ```
 
-## Initial Setup Instructions
+3. **Create Environment Variables**
+   Create a file in the root directory named `.env` and add the following:
+   ```plaintext
+   SERVER_SESSION_SECRET=yourSuperSecretStringHere
+   ```
+   Replace `yourSuperSecretStringHere` with a strong, randomly generated secret.
 
-- In this repo's **root directory**, run `npm install`.
-- Create an `.env` file in the **root directory**, then paste this line into the file:
-    ```plaintext
-      SERVER_SESSION_SECRET=superDuperSecret
-    ```
-- While you're in your new `.env` file, take the time to replace `superDuperSecret` with some a random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. 
-    - Here's a site that can help you: [Password Generator Plus](https://passwordsgenerator.net).
-    - If you skip this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you'll get a big warning message each time you start your server.
-- Run `npm run server` to start the server.
-- Run `npm run client` to start the client.
-- Navigate to `localhost:5173`.
-    - Verify that you are able to:
-        - Register as a new user.
-        - Log out.
-        - Log back in.
-        - Log out.
-- Congrats! You now have a starting line for the cool thing you're about to build. 🙂
+4. **Start the Server and Client**
+   - In one terminal, run:
+     ```bash
+     npm run server
+     ```
+   - In another terminal, run:
+     ```bash
+     npm run client
+     ```
+   - Open your browser and navigate to `http://localhost:5173` to view the application.
 
-## Lay of the Land
+## Database Setup
 
-This repository is intentionally quite minimal. It features the same directory structure that you know and love:
+1. **Create Database**
+   - Create a new PostgreSQL database (default name is `prime_app`). If you use a different name, update the connection details in `pool.js`.
 
-- `src/`: The React application and Zustand store.
-- `public/`: Static assets for the client-side. (In this case, just a `favicon.ico` file.)
-- `server/`: The Express server.
+2. **Create Tables**
+   - Run the SQL commands found in `database.sql` to create the necessary tables (e.g., the `user` table).
 
-Much of the code code is descriptively commented. We recommend reading through the comments, getting a lay of the land, and becoming more comfortable with how it works before you start building on top of it.
+3. **Insert Initial Data**
+   - Use SQL statements to seed your database. For example, insert a user:
+     ```sql
+     INSERT INTO "user" (
+       "username", "email", "password", "role", "first_name", "last_name",
+       "pronouns", "company", "job_title", "manager_assigned"
+     )
+     VALUES
+     ('mharper', 'mharper@email.com', 'temp1234', 'manager', 'Megan', 'Harper',
+      'she/her', 'Acme Inc', 'People Manager', NULL);
+     ```
+   - Add additional dummy data as needed for testing.
 
-For example, you're going to need to create new React Routes and Nav links as you build out your application. To do so, you'll first need a clear understanding of:
+## Folder Structure
 
-- How the `<Route>`s in `App.jsx` function.
-- How the `<NavLink>`s in `Nav.jsx` function.
+```
+up-all/
+├── src/  
+│   ├── components/         # React components & pages
+│   ├── zustand/            # Zustand store and slices
+│   └── App.jsx             # Main application file with routes
+├── public/                 # Static assets (e.g., favicon.ico)
+├── server/                 # Express server and API routes
+│   ├── routes/             # Route handlers (e.g., user.router.js, dashboard.router.js)
+│   └── modules/            # Database connection pool configuration
+├── .env                    # Environment variables
+├── package.json            # NPM dependencies and scripts
+└── README.md               # Project documentation (this file)
+```
+
+## Usage
+
+- **Register/Login:** Users can register and log in using Passport for authentication.
+- **Manager Dashboard:** Managers can view a list of employees and see dynamic weekly content.
+- **User Updates:** Users can update their profiles via the `/api/user/update` endpoint.
+
+## Features
+
+- **Full-Stack Setup:** Integrated front-end and back-end using React and Express.
+- **Authentication:** User authentication handled with Passport.
+- **State Management:** Global state managed with Zustand.
+- **API Endpoints:** RESTful endpoints for user management, assignments, and dashboard data.
+- **Database Integration:** Uses PostgreSQL for persistent data storage.
+
+## Contributing
+
+Contributions are welcome! Please adhere to the following guidelines:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit pull requests with clear commit messages and documentation.
+
+## License
+
+MIT License ---- Not available for open source. 
 
 
-## Don't Forget to Update the Documentation
+Copyright (c) 2025 Junior Avalos, Jake Berg,
+Megan Tegeder, Will Shuford, Michael Silas
 
-Don't forget to refactor this README file, as well as *the code comments in this project*, to read less like a starter repo and more like a finished project.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## Have Fun
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Remember. This is only a two-week sprint! The goal is to:
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-- **Take the most clear and straightforward path to MVP!**
-- Ensure your MVP functions as expected.
-    - If you're going to build more stuff on top of it, you need to be able to trust it!
 
-Once you've attained that, you'll have the opportunity to:
+---
 
-- Take stock of how much time is left, as well as how much bandwidth you have.
-- Reason about which stretch goal(s) to attempt.
